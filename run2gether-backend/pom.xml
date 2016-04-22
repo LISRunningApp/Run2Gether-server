@@ -171,8 +171,7 @@
   			<artifactId>guava</artifactId>
   			<version>${guava-version}</version>
 		</dependency>
-
-
+		<!-- QueryDSL -->
 	    <dependency>
 	    	<groupId>com.querydsl</groupId>
 	    	<artifactId>querydsl-apt</artifactId>
@@ -183,11 +182,13 @@
 	    	<artifactId>querydsl-jpa</artifactId>
 	    	<version>4.1.0</version>
 	    </dependency>
+	    <!-- Logger Log4j -->
 	    <dependency>
 	    	<groupId>org.slf4j</groupId>
 	    	<artifactId>slf4j-log4j12</artifactId>
 	    	<version>1.7.21</version>
 	    </dependency>
+	    <!-- Hibernate dependencies for JPA2 -->
 	    <dependency>
 	    	<groupId>hibernate</groupId>
 	    	<artifactId>hibernate-entitymanager</artifactId>
@@ -198,6 +199,32 @@
 	    	<groupId>org.hibernate.javax.persistence</groupId>
 	    	<artifactId>hibernate-jpa-2.1-api</artifactId>
 	    	<version>1.0.0.Final</version>
+	    </dependency>
+	    <!-- Spring -->
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-web</artifactId>
+	    	<version>4.2.5.RELEASE</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-context</artifactId>
+	    	<version>4.2.5.RELEASE</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-core</artifactId>
+	    	<version>4.2.5.RELEASE</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-jpa</artifactId>
+	    	<version>2.0.8</version>
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.glassfish.jersey.ext</groupId>
+	    	<artifactId>jersey-spring3</artifactId>
+	    	<version>2.22.2</version>
 	    </dependency>
 	</dependencies>
 	

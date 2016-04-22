@@ -1,13 +1,19 @@
 package com.run2gether.backend.data;
 
-import javax.inject.Named;
 import javax.json.Json;
 import javax.json.JsonArray;
 
-@Named
-public class UserRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class UsersRepository {
+	
+	public UsersRepository() {
+		
+	}
 	
 	public JsonArray getAllUsers() {
+		
 		return Json.createArrayBuilder()
 				.add(Json.createObjectBuilder()
 						.add("name", "John")
@@ -15,7 +21,7 @@ public class UserRepository {
 						.build())
 				.add(Json.createObjectBuilder()
 						.add("name", "Cristian")
-						.add("surname", "G�mez")
+						.add("surname", "Gómez")
 						.build())
 				.build();
 	}
