@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.run2gether.backend.data.UsersRepository;
 
+
 @Path("users")
 @Component
 public class UsersResource {

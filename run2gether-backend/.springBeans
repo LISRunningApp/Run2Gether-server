@@ -10,6 +10,7 @@
 		<config>src/main/resources/applicationContext.xml</config>
 	</configs>
 	<autoconfigs>
+		<config>java:com.run2gether.backend.rest.services.UsersResource</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>
