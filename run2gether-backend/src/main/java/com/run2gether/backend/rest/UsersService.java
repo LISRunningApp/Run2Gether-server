@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.run2gether.backend.data.UsersRepository;
-import com.run2gether.backend.model.Users;
+import com.run2gether.backend.model.User;
 
 
 @Path("users")
@@ -26,13 +26,13 @@ public class UsersService {
 	
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public List<Users> getAllUsers() {
+	public List<User> getAllUsers() {
 		return usersRepository.getAllUsers();
 	}
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response postUser(Users newUser) {
+	public Response postUser(User newUser) {
 		usersRepository.postUser(newUser);
 		return Response.ok().build();
 	}

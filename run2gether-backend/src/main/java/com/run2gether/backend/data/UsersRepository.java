@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.run2gether.backend.model.QUsers;
-import com.run2gether.backend.model.Users;
+import com.run2gether.backend.model.QUser;
+import com.run2gether.backend.model.User;
 
 @Repository
 public class UsersRepository {
@@ -20,17 +20,17 @@ public class UsersRepository {
 	private EntityManager em;
 	
 	@Transactional
-	public List<Users> getAllUsers() {
+	public List<User> getAllUsers() {
 //		Users bob = new Users("Bob", "Kerman", "bobby.k@msn.com", true, new Date(Calendar.getInstance().getTimeInMillis()), "online");
 //		em.persist(bob);
-		JPQLQuery<Users> query = new JPAQuery<>(em);
-		QUsers qu = QUsers.users;
-		List<Users> list = query.from(qu).fetch();
+		JPQLQuery<User> query = new JPAQuery<>(em);
+		QUser qu = QUser.user;
+		List<User> list = query.from(qu).fetch();
 		return list;
 	}
 	
 	@Transactional
-	public void postUser(Users newUser) {
+	public void postUser(User newUser) {
 		em.persist(newUser);
 	}
 }
