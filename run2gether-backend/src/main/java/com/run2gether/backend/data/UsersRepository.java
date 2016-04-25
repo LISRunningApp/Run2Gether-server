@@ -1,13 +1,16 @@
 package com.run2gether.backend.data;
 
-import javax.json.Json;
-import javax.json.JsonArray;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.run2gether.backend.model.QUsers;
 import com.run2gether.backend.model.Users;
 
 @Repository
@@ -17,19 +20,17 @@ public class UsersRepository {
 	private EntityManager em;
 	
 	@Transactional
-	public JsonArray getAllUsers() {
-		Users bob = new Users("Bob", "Kerman");
-		em.persist(bob);
-		return Json.createArrayBuilder()
-				.add(Json.createObjectBuilder()
-						.add("name", "John")
-						.add("surname", "Doe")
-						.build())
-				.add(Json.createObjectBuilder()
-						.add("name", "Cristian")
-						.add("surname", "Gómez")
-						.build())
-				.build();
+	public List<Users> getAllUsers() {
+//		Users bob = new Users("Bob", "Kerman", "bobby.k@msn.com", true, new Date(Calendar.getInstance().getTimeInMillis()), "online");
+//		em.persist(bob);
+		JPQLQuery<Users> query = new JPAQuery<>(em);
+		QUsers qu = QUsers.users;
+		List<Users> list = query.from(qu).fetch();
+		return list;
 	}
 	
+	@Transactional
+	public void postUser(Users newUser) {
+		em.persist(newUser);
+	}
 }
