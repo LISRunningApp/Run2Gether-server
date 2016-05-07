@@ -4,9 +4,9 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<!-- Configuring JDBC properties -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/run2gether"/>
-			<property name="javax.persistence.jdbc.user" value="run2gether"/>
-			<property name="javax.persistence.jdbc.password" value="miau1234"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/run2gether_dev"/>
+			<property name="javax.persistence.jdbc.user" value="dev"/>
+			<property name="javax.persistence.jdbc.password" value="miaumiau"/>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 			
 			<!-- Hibernate properties -->
