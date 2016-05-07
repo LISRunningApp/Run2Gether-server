@@ -16,11 +16,13 @@ public class ObjectMapperContextResolver implements ContextResolver<ObjectMapper
     public ObjectMapperContextResolver() {
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
         mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+        //mapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
         mapper.registerModule(new JaxbAnnotationModule());
     }
 
     @Override
     public ObjectMapper getContext(Class<?> type) {
+
         return mapper;
     }
 }

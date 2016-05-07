@@ -1,7 +1,5 @@
 package com.run2gether.backend.data;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -12,6 +10,7 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.run2gether.backend.model.QUser;
 import com.run2gether.backend.model.User;
+import com.run2gether.backend.model.wrappers.Users;
 
 @Repository
 public class UsersRepository {
@@ -20,13 +19,11 @@ public class UsersRepository {
 	private EntityManager em;
 	
 	@Transactional
-	public List<User> getAllUsers() {
-//		User bob = new User("Bob", "Kerman", "bobby.k@msn.com", true, new Date(Calendar.getInstance().getTimeInMillis()), "online");
-//		em.persist(bob);
+	public Users getAllUsers() {
 		JPQLQuery<User> query = new JPAQuery<>(em);
 		QUser qu = QUser.user;
-		List<User> list = query.from(qu).fetch();
-		return list;
+		Users users = new Users(query.from(qu).fetch());
+		return users;
 	}
 	
 	@Transactional

@@ -1,7 +1,5 @@
 package com.run2gether.backend.rest;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,9 +23,9 @@ public class UsersService {
 	private UsersRepository usersRepository;
 	
 	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public List<User> getAllUsers() {
-		return usersRepository.getAllUsers();
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllUsers() {
+		return Response.ok(usersRepository.getAllUsers()).build();
 	}
 	
 	@POST
