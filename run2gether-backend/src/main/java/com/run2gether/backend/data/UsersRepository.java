@@ -21,7 +21,7 @@ public class UsersRepository {
 	
 	@Transactional
 	public List<User> getAllUsers() {
-//		Users bob = new Users("Bob", "Kerman", "bobby.k@msn.com", true, new Date(Calendar.getInstance().getTimeInMillis()), "online");
+//		User bob = new User("Bob", "Kerman", "bobby.k@msn.com", true, new Date(Calendar.getInstance().getTimeInMillis()), "online");
 //		em.persist(bob);
 		JPQLQuery<User> query = new JPAQuery<>(em);
 		QUser qu = QUser.user;
