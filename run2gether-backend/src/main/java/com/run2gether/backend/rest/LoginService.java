@@ -10,7 +10,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.run2gether.backend.data.LoginRepository;
 
 @Path("/login")
 @Component
@@ -18,14 +21,18 @@ public class LoginService {
 
 	Logger log = Logger.getLogger(LoginService.class);
 
+	@Autowired
+	private LoginRepository loginRepository;
+
 	@POST
+	@Path("/facebook")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response postLogin(JsonObject loginParams) {
+	public Response postLoginFb(JsonObject loginParams) {
 
-		String token = "";
-		String name = "";
-		String idFace = "";
+		String token;
+		String name;
+		String idFace;
 
 		if (loginParams.values().size() != 3)
 			return Response.status(Status.BAD_REQUEST).build();
@@ -39,10 +46,36 @@ public class LoginService {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 
-		log.debug("Token: " + token);
-		log.debug("Name: " + name);
-		log.debug("IdFace: " + idFace);
+		loginRepository.postLoginFb(name, idFace, token);
 
-		return Response.ok("Logging Successful").build();
+		return Response.status(Status.EXPECTATION_FAILED).build();
+
+		// return Response.ok("Login Successful").build();
+	}
+
+	@POST
+	@Path("/database")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response postLoginDb(JsonObject loginParams) {
+
+		String username;
+		String password;
+
+		if (loginParams.values().size() != 2)
+			return Response.status(Status.BAD_REQUEST).build();
+
+		try {
+			username = loginParams.get("User").toString();
+			password = loginParams.get("Psw").toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+
+		log.debug(username);
+		log.debug(password);
+
+		return Response.ok("Login Successful").build();
 	}
 }

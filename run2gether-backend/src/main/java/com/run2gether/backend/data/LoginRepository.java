@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
-import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,28 +11,25 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.run2gether.backend.model.QUsers;
 import com.run2gether.backend.model.Users;
-import com.run2gether.backend.model.wrappers.UsersWrapper;
 
 @Repository
-public class UsersRepository {
+public class LoginRepository {
 
 	@PersistenceContext
 	private EntityManager em;
 
-	final Logger log = Logger.getLogger(UsersRepository.class);
+	final Logger log = Logger.getLogger(LoginRepository.class);
 
 	@Transactional
-	public UsersWrapper getAllUsers() {
+	public void postLoginFb(String name, String idFace, String token) {
 		JPQLQuery<Users> query = new JPAQuery<>(em);
 		QUsers qusers = QUsers.users;
-		UsersWrapper usersWrapper = new UsersWrapper(query.from(qusers).fetch());
-		return usersWrapper;
+		Users user = query.from(qusers).where(qusers.username.eq(idFace)).fetchOne();
+
 	}
 
 	@Transactional
-	public void postUser(Users newUser) {
-		newUser.setCreationDate(new LocalDateTime().toDate());
-		newUser.setLastLogin(new LocalDateTime().toDate());
-		em.persist(newUser);
+	public void postLoginDb(String username, String passwd) {
+
 	}
 }
