@@ -13,11 +13,9 @@ import org.springframework.stereotype.Component;
 
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.User;
-import com.wordnik.swagger.annotations.Api;
 
-@Path("users")
+@Path("/users")
 @Component
-@Api(value = "/users", description = "Users service")
 public class UsersService {
 
 	@Autowired
