@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 07-may-2016 22:23:29 by Hibernate Tools 5.1.0.Alpha1
+// Generated 08-may-2016 18:26:46 by Hibernate Tools 5.1.0.Alpha1
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -22,23 +22,23 @@ public class Userslogros implements java.io.Serializable {
 
 	private static final long serialVersionUID = 7L;
 	private UserslogrosId id;
-	private Logro logro;
-	private User user;
+	private Logros logros;
+	private Users users;
 	private String dateLogro;
 
 	public Userslogros() {
 	}
 
-	public Userslogros(UserslogrosId id, Logro logro, User user) {
+	public Userslogros(UserslogrosId id, Logros logros, Users users) {
 		this.id = id;
-		this.logro = logro;
-		this.user = user;
+		this.logros = logros;
+		this.users = users;
 	}
 
-	public Userslogros(UserslogrosId id, Logro logro, User user, String dateLogro) {
+	public Userslogros(UserslogrosId id, Logros logros, Users users, String dateLogro) {
 		this.id = id;
-		this.logro = logro;
-		this.user = user;
+		this.logros = logros;
+		this.users = users;
 		this.dateLogro = dateLogro;
 	}
 
@@ -48,7 +48,7 @@ public class Userslogros implements java.io.Serializable {
 			@AttributeOverride(name = "idLogro", column = @Column(name = "idLogro", unique = true, nullable = false)),
 			@AttributeOverride(name = "idUser", column = @Column(name = "idUser", unique = true, nullable = false)) })
 	public UserslogrosId getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(UserslogrosId id) {
@@ -57,27 +57,27 @@ public class Userslogros implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idLogro", unique = true, nullable = false, insertable = false, updatable = false)
-	public Logro getLogros() {
-		return this.logro;
+	public Logros getLogros() {
+		return logros;
 	}
 
-	public void setLogros(Logro logro) {
-		this.logro = logro;
+	public void setLogros(Logros logros) {
+		this.logros = logros;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idUser", unique = true, nullable = false, insertable = false, updatable = false)
-	public User getUsers() {
-		return this.user;
+	public Users getUsers() {
+		return users;
 	}
 
-	public void setUsers(User user) {
-		this.user = user;
+	public void setUsers(Users users) {
+		this.users = users;
 	}
 
 	@Column(name = "dateLogro", length = 45)
 	public String getDateLogro() {
-		return this.dateLogro;
+		return dateLogro;
 	}
 
 	public void setDateLogro(String dateLogro) {

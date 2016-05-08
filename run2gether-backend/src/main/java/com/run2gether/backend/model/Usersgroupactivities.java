@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 07-may-2016 22:23:29 by Hibernate Tools 5.1.0.Alpha1
+// Generated 08-may-2016 18:26:46 by Hibernate Tools 5.1.0.Alpha1
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -20,17 +20,17 @@ public class Usersgroupactivities implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5L;
 	private UsersgroupactivitiesId id;
-	private Groupactivity groupactivity;
-	private User user;
+	private Groupactivities groupactivities;
+	private Users users;
 	private String date;
 
 	public Usersgroupactivities() {
 	}
 
-	public Usersgroupactivities(UsersgroupactivitiesId id, Groupactivity groupactivity, User user, String date) {
+	public Usersgroupactivities(UsersgroupactivitiesId id, Groupactivities groupactivities, Users users, String date) {
 		this.id = id;
-		this.groupactivity = groupactivity;
-		this.user = user;
+		this.groupactivities = groupactivities;
+		this.users = users;
 		this.date = date;
 	}
 
@@ -40,7 +40,7 @@ public class Usersgroupactivities implements java.io.Serializable {
 			@AttributeOverride(name = "idGroupActivities", column = @Column(name = "idGroupActivities", nullable = false)),
 			@AttributeOverride(name = "idUser", column = @Column(name = "idUser", nullable = false)) })
 	public UsersgroupactivitiesId getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(UsersgroupactivitiesId id) {
@@ -49,27 +49,27 @@ public class Usersgroupactivities implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idGroupActivities", nullable = false, insertable = false, updatable = false)
-	public Groupactivity getGroupactivities() {
-		return this.groupactivity;
+	public Groupactivities getGroupactivities() {
+		return groupactivities;
 	}
 
-	public void setGroupactivities(Groupactivity groupactivity) {
-		this.groupactivity = groupactivity;
+	public void setGroupactivities(Groupactivities groupactivities) {
+		this.groupactivities = groupactivities;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idUser", nullable = false, insertable = false, updatable = false)
-	public User getUsers() {
-		return this.user;
+	public Users getUsers() {
+		return users;
 	}
 
-	public void setUsers(User user) {
-		this.user = user;
+	public void setUsers(Users users) {
+		this.users = users;
 	}
 
 	@Column(name = "date", nullable = false, length = 45)
 	public String getDate() {
-		return this.date;
+		return date;
 	}
 
 	public void setDate(String date) {
