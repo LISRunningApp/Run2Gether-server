@@ -3,6 +3,7 @@ package com.run2gether.backend.data;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +15,10 @@ import com.run2gether.backend.model.wrappers.Users;
 
 @Repository
 public class UsersRepository {
-	
+
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@Transactional
 	public Users getAllUsers() {
 		JPQLQuery<User> query = new JPAQuery<>(em);
@@ -25,9 +26,11 @@ public class UsersRepository {
 		Users users = new Users(query.from(qu).fetch());
 		return users;
 	}
-	
+
 	@Transactional
 	public void postUser(User newUser) {
+		newUser.setCreationDate(new LocalDateTime().toDate());
+		newUser.setLastLogin(new LocalDateTime().toDate());
 		em.persist(newUser);
 	}
 }

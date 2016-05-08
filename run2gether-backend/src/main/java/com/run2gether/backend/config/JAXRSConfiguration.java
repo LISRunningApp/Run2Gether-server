@@ -7,4 +7,3 @@ import javax.ws.rs.core.Application;
 public class JAXRSConfiguration extends Application {
 
 }
-	

@@ -14,20 +14,19 @@ import org.springframework.stereotype.Component;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.User;
 
-
 @Path("users")
 @Component
 public class UsersService {
-	
+
 	@Autowired
 	private UsersRepository usersRepository;
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
 		return Response.ok(usersRepository.getAllUsers()).build();
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response postUser(User newUser) {

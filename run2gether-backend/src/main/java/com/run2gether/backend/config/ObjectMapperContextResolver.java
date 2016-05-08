@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 
+import java.text.SimpleDateFormat;
+
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
@@ -18,6 +20,8 @@ public class ObjectMapperContextResolver implements ContextResolver<ObjectMapper
         mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
         //mapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
         mapper.registerModule(new JaxbAnnotationModule());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        mapper.setDateFormat(sdf);
     }
 
     @Override
