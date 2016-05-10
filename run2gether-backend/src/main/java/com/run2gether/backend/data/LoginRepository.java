@@ -25,7 +25,7 @@ public class LoginRepository {
 		JPQLQuery<Users> query = new JPAQuery<>(em);
 		QUsers qusers = QUsers.users;
 		Users user = query.from(qusers).where(qusers.username.eq(idFace)).fetchOne();
-
+		user.getAge();
 	}
 
 	@Transactional

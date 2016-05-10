@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 08-may-2016 18:26:46 by Hibernate Tools 5.1.0.Alpha1
+// Generated 10-may-2016 17:28:44 by Hibernate Tools 5.1.0.Alpha1
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -22,7 +22,7 @@ public class Activities implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private Users users;
-	private String rute;
+	private String route;
 	private String timeKm;
 	private Double km;
 	private String duration;
@@ -34,9 +34,9 @@ public class Activities implements java.io.Serializable {
 		this.users = users;
 	}
 
-	public Activities(Users users, String rute, String timeKm, Double km, String duration) {
+	public Activities(Users users, String route, String timeKm, Double km, String duration) {
 		this.users = users;
-		this.rute = rute;
+		this.route = route;
 		this.timeKm = timeKm;
 		this.km = km;
 		this.duration = duration;
@@ -64,13 +64,13 @@ public class Activities implements java.io.Serializable {
 		this.users = users;
 	}
 
-	@Column(name = "rute")
-	public String getRute() {
-		return rute;
+	@Column(name = "route")
+	public String getRoute() {
+		return route;
 	}
 
-	public void setRute(String rute) {
-		this.rute = rute;
+	public void setRoute(String route) {
+		this.route = route;
 	}
 
 	@Column(name = "timeKM")

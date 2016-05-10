@@ -1,5 +1,7 @@
 package com.run2gether.backend.model;
-// Generated 08-may-2016 18:26:46 by Hibernate Tools 5.1.0.Alpha1
+// Generated 10-may-2016 17:28:44 by Hibernate Tools 5.1.0.Alpha1
+
+import java.util.Date;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -10,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 /**
@@ -24,7 +28,7 @@ public class Userslogros implements java.io.Serializable {
 	private UserslogrosId id;
 	private Logros logros;
 	private Users users;
-	private String dateLogro;
+	private Date dateLogro;
 
 	public Userslogros() {
 	}
@@ -35,7 +39,7 @@ public class Userslogros implements java.io.Serializable {
 		this.users = users;
 	}
 
-	public Userslogros(UserslogrosId id, Logros logros, Users users, String dateLogro) {
+	public Userslogros(UserslogrosId id, Logros logros, Users users, Date dateLogro) {
 		this.id = id;
 		this.logros = logros;
 		this.users = users;
@@ -75,12 +79,13 @@ public class Userslogros implements java.io.Serializable {
 		this.users = users;
 	}
 
-	@Column(name = "dateLogro", length = 45)
-	public String getDateLogro() {
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dateLogro", length = 19)
+	public Date getDateLogro() {
 		return dateLogro;
 	}
 
-	public void setDateLogro(String dateLogro) {
+	public void setDateLogro(Date dateLogro) {
 		this.dateLogro = dateLogro;
 	}
 

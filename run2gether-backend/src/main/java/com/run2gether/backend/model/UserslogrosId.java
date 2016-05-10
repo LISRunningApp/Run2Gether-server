@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 08-may-2016 18:26:46 by Hibernate Tools 5.1.0.Alpha1
+// Generated 10-may-2016 17:28:44 by Hibernate Tools 5.1.0.Alpha1
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
