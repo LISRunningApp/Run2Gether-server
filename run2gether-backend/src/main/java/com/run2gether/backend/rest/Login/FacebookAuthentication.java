@@ -1,4 +1,4 @@
-package com.run2gether.backend.rest;
+package com.run2gether.backend.rest.Login;
 
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
@@ -15,11 +15,10 @@ import org.springframework.stereotype.Component;
 
 import com.run2gether.backend.data.LoginRepository;
 
-@Path("/login")
 @Component
-public class LoginService {
+public class FacebookAuthentication {
 
-	Logger log = Logger.getLogger(LoginService.class);
+	Logger log = Logger.getLogger(FacebookAuthentication.class);
 
 	@Autowired
 	private LoginRepository loginRepository;

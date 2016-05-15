@@ -8,6 +8,7 @@ import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.run2gether.backend.model.QUsers;
@@ -35,5 +36,15 @@ public class UsersRepository {
 		newUser.setCreationDate(new LocalDateTime().toDate());
 		newUser.setLastLogin(new LocalDateTime().toDate());
 		em.persist(newUser);
+	}
+
+	@Transactional
+	public UsersWrapper getUniqueUser(String idUser) {
+		JPQLQuery<Users> query = new JPAQuery<>(em);
+		QUsers qu = QUsers.users;
+		BooleanExpression wh = QUsers.users.email.eq(idUser);
+		UsersWrapper usersWrapper = new UsersWrapper(query.from(qu).where(wh).fetch());
+		return usersWrapper;
+
 	}
 }

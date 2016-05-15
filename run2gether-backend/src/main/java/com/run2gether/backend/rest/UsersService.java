@@ -1,5 +1,6 @@
 package com.run2gether.backend.rest;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -24,12 +25,14 @@ public class UsersService {
 	@Autowired
 	private UsersRepository usersRepository;
 
+	@RolesAllowed("USER")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
 		return Response.ok(usersRepository.getAllUsers()).build();
 	}
 
+	@RolesAllowed("USER")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response postUser(Users newUser) {
