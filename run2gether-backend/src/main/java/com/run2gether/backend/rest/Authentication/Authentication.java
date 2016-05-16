@@ -21,7 +21,7 @@ abstract public class Authentication {
 			Class.forName(driver).newInstance();
 			java.sql.Connection conn = DriverManager.getConnection(url + dbName, userName, password);
 			Statement st = conn.createStatement();
-			String query = "SELECT password, email, username  FROM  users where email= '" + username
+			String query = "SELECT password, email, usernamem, login_type  FROM  users where email= '" + username
 					+ "' or username = '" + username + "'";
 			ResultSet res = st.executeQuery(query);
 
@@ -30,6 +30,7 @@ abstract public class Authentication {
 				element.put("username", res.getString("username"));
 				element.put("email", res.getString("email"));
 				element.put("password", res.getString("password"));
+				element.put("login_type", res.getString("login_type"));
 				listUser.add(element);
 			}
 			res.close();

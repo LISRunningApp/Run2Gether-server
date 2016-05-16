@@ -39,10 +39,10 @@ public class UsersRepository {
 	}
 
 	@Transactional
-	public UsersWrapper getUniqueUser(String idUser) {
+	public UsersWrapper getEspecificUser(String idUser) {
 		JPQLQuery<Users> query = new JPAQuery<>(em);
 		QUsers qu = QUsers.users;
-		BooleanExpression wh = QUsers.users.email.eq(idUser);
+		BooleanExpression wh = QUsers.users.email.eq(idUser).or(QUsers.users.username.eq(idUser));
 		UsersWrapper usersWrapper = new UsersWrapper(query.from(qu).where(wh).fetch());
 		return usersWrapper;
 

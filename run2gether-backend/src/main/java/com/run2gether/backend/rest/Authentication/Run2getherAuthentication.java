@@ -44,24 +44,24 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 			final MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
 			// Fetch authorization header
-			final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
-
-			// If no authorization information present; block access
-			if (authorization == null || authorization.isEmpty()) {
-				requestContext.abortWith(ACCESS_DENIED);
-				return;
-			}
-
-			// TODO realizar el login para Facebook, comprovacion y BASIC a la
-			// vez
-			// Basic Authentification
-			if (authorization.get(0).contains(AUTHENTICATION_SCHEME)) {
-				auth = new BasicAuthentication(authorization.get(0));
-				System.out.println("Correct");
-			} else
-			// auth = new FacebookAuthentication(authorization.get(0));
-
 			if (method.isAnnotationPresent(RolesAllowed.class)) {
+				final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
+
+				// If no authorization information present; block access
+				if (authorization == null || authorization.isEmpty()) {
+					requestContext.abortWith(ACCESS_DENIED);
+					return;
+				}
+
+				// TODO realizar el login para Facebook, comprovacion y BASIC a
+				// la
+				// vez
+				// Basic Authentification
+				if (authorization.get(0).contains(AUTHENTICATION_SCHEME))
+					auth = new BasicAuthentication(authorization.get(0));
+				else
+					auth = new FacebookAuthentication(authorization.get(0));
+
 				RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
 				Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
 
@@ -71,9 +71,10 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 						return;
 					}
 				} catch (Exception e) {
-					System.out.println("about coenction");
+					log.debug("abort Conection");
 				}
 			}
 		}
+		log.debug("Correct authentification");
 	}
 }

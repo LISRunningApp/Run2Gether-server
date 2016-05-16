@@ -2,15 +2,18 @@ package com.run2gether.backend.rest.Authentication;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+
 import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class FacebookAuthentication extends Authentication {
 	Logger log = Logger.getLogger(FacebookAuthentication.class);
@@ -48,19 +51,20 @@ public class FacebookAuthentication extends Authentication {
 				b.append(inputLine + "\n");
 			in.close();
 			graph = b.toString();
-			System.out.println(graph);
 		} catch (Exception e) {
 			throw new RuntimeException("ERROR in getting FB graph data. " + e);
 		}
 		ArrayList<Hashtable<String, String>> fbProfile = new ArrayList<Hashtable<String, String>>();
 		Hashtable<String, String> element = new Hashtable<String, String>();
 		try {
-			JSONObject json = new JSONObject(graph);
+			JsonReader read = Json.createReader(new StringReader(graph));
+			JsonObject json = read.readObject();
+			// JSONObject json = new JSONObject(graph);
 			element.put("id", json.getString("id"));
 			element.put("first_name", json.getString("first_name"));
-			if (json.has("email"))
+			if (json.containsKey("email"))
 				element.put("email", json.getString("email"));
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("ERROR in parsing FB graph data. " + e);
 		}
