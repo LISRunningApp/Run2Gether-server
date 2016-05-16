@@ -1,4 +1,4 @@
-package com.run2gether.backend.rest.Login;
+package com.run2gether.backend.rest.Authentication;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -15,11 +15,14 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-public class Run2getherAuthentication implements javax.ws.rs.container.ContainerRequestFilter {
+import org.apache.log4j.Logger;
 
+public class Run2getherAuthentication implements javax.ws.rs.container.ContainerRequestFilter {
+	Logger log = Logger.getLogger(Run2getherAuthentication.class);
 	@Context
 	private ResourceInfo resourceInfo;
 	private static Authentication auth = null;
+	private static final String AUTHENTICATION_SCHEME = "Basic";
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
 	private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
 			.entity("You cannot access this resource").build();
@@ -52,10 +55,11 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 			// TODO realizar el login para Facebook, comprovacion y BASIC a la
 			// vez
 			// Basic Authentification
-			// if (authorization.get(0).contains(AUTHENTICATION_SCHEME)) {
-			auth = new BasicAuthentication(authorization.get(0));
-			// System.out.println("Correct");
-			// }
+			if (authorization.get(0).contains(AUTHENTICATION_SCHEME)) {
+				auth = new BasicAuthentication(authorization.get(0));
+				System.out.println("Correct");
+			} else
+			// auth = new FacebookAuthentication(authorization.get(0));
 
 			if (method.isAnnotationPresent(RolesAllowed.class)) {
 				RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);

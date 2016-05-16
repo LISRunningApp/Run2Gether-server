@@ -7,18 +7,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.run2gether.backend.data.LoginRepository;
+@Path("/login")
 
 @Component
-public class FacebookAuthentication {
-
-	Logger log = Logger.getLogger(FacebookAuthentication.class);
+public class Login {
+	Logger log = Logger.getLogger(Login.class);
 
 	@Autowired
 	private LoginRepository loginRepository;
@@ -77,4 +75,5 @@ public class FacebookAuthentication {
 
 		return Response.ok("Login Successful").build();
 	}
+
 }
