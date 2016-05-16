@@ -20,7 +20,6 @@ import com.run2gether.backend.model.Users;
 import com.run2gether.backend.model.wrappers.UsersWrapper;
 
 @Path("/login")
-
 @Component
 public class Login {
 	Logger log = Logger.getLogger(Login.class);
@@ -32,11 +31,7 @@ public class Login {
 	@Autowired
 	private UsersRepository usersRepository;
 
-	@Autowired
-	private LoginRepository loginRepository;
-
 	@POST
-	@Path("/facebook")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response postLoginFb(JsonObject loginParams) {
@@ -61,36 +56,6 @@ public class Login {
 			return Response.status(401).build();
 		}
 		return result;
-
-		/*
-		 * String token = ""; String name = ""; String idFace = "";
-		 *
-		 * if (loginParams.values().size() != 3) return
-		 * Response.status(Status.BAD_REQUEST).build(); try { token =
-		 * loginParams.get("Token").toString(); name =
-		 * loginParams.get("Name").toString(); idFace =
-		 * loginParams.get("IdFace").toString(); } catch (Exception e) {
-		 * e.printStackTrace(); return
-		 * Response.status(Status.BAD_REQUEST).build(); }
-		 *
-		 * log.debug("Token: " + token); log.debug("Name: " + name); log.debug(
-		 * "IdFace: " + idFace);
-		 *
-		 * return Response.ok("Logging Successful").build();
-		 */
-
-		try {
-			username = loginParams.get("User").toString();
-			password = loginParams.get("Psw").toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
-		}
-
-		log.debug(username);
-		log.debug(password);
-
-		return Response.ok("Login Successful").build();
 	}
 
 }
