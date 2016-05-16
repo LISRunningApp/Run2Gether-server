@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 10-may-2016 17:28:44 by Hibernate Tools 5.1.0.Alpha1
+// Generated 16-may-2016 18:34:41 by Hibernate Tools 5.1.0.Alpha1
 
 import java.util.Date;
 
@@ -24,7 +24,7 @@ import javax.persistence.UniqueConstraint;
 		@UniqueConstraint(columnNames = "idLogro"), @UniqueConstraint(columnNames = "idUser") })
 public class Userslogros implements java.io.Serializable {
 
-	private static final long serialVersionUID = 7L;
+	private static final long serialVersionUID = 11L;
 	private UserslogrosId id;
 	private Logros logros;
 	private Users users;

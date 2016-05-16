@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 10-may-2016 17:28:44 by Hibernate Tools 5.1.0.Alpha1
+// Generated 16-may-2016 18:34:41 by Hibernate Tools 5.1.0.Alpha1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +19,7 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "logros", catalog = "run2gether_dev", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Logros implements java.io.Serializable {
 
-	private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 7L;
 	private int id;
 	private String name;
 	private String descripcion;

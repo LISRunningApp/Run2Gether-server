@@ -36,5 +36,4 @@ public class UsersService {
 		usersRepository.postUser(newUser);
 		return Response.ok().build();
 	}
-
 }

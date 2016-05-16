@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 10-may-2016 17:28:44 by Hibernate Tools 5.1.0.Alpha1
+// Generated 16-may-2016 18:34:41 by Hibernate Tools 5.1.0.Alpha1
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,7 +10,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class UserslogrosId implements java.io.Serializable {
 
-	private static final long serialVersionUID = 8L;
+	private static final long serialVersionUID = 12L;
 	private int idLogro;
 	private int idUser;
 

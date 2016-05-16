@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 10-may-2016 17:28:44 by Hibernate Tools 5.1.0.Alpha1
+// Generated 16-may-2016 18:34:41 by Hibernate Tools 5.1.0.Alpha1
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -24,8 +24,9 @@ public class Activities implements java.io.Serializable {
 	private Users users;
 	private String route;
 	private String timeKm;
-	private Double km;
+	private Double m;
 	private String duration;
+	private Integer idGroupActivities;
 
 	public Activities() {
 	}
@@ -34,12 +35,13 @@ public class Activities implements java.io.Serializable {
 		this.users = users;
 	}
 
-	public Activities(Users users, String route, String timeKm, Double km, String duration) {
+	public Activities(Users users, String route, String timeKm, Double m, String duration, Integer idGroupActivities) {
 		this.users = users;
 		this.route = route;
 		this.timeKm = timeKm;
-		this.km = km;
+		this.m = m;
 		this.duration = duration;
+		this.idGroupActivities = idGroupActivities;
 	}
 
 	@Id
@@ -82,13 +84,13 @@ public class Activities implements java.io.Serializable {
 		this.timeKm = timeKm;
 	}
 
-	@Column(name = "km", precision = 22, scale = 0)
-	public Double getKm() {
-		return km;
+	@Column(name = "m", precision = 22, scale = 0)
+	public Double getM() {
+		return m;
 	}
 
-	public void setKm(Double km) {
-		this.km = km;
+	public void setM(Double m) {
+		this.m = m;
 	}
 
 	@Column(name = "duration", length = 45)
@@ -98,6 +100,15 @@ public class Activities implements java.io.Serializable {
 
 	public void setDuration(String duration) {
 		this.duration = duration;
+	}
+
+	@Column(name = "idGroupActivities")
+	public Integer getIdGroupActivities() {
+		return idGroupActivities;
+	}
+
+	public void setIdGroupActivities(Integer idGroupActivities) {
+		this.idGroupActivities = idGroupActivities;
 	}
 
 }

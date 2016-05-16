@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 10-may-2016 17:28:44 by Hibernate Tools 5.1.0.Alpha1
+// Generated 16-may-2016 18:34:41 by Hibernate Tools 5.1.0.Alpha1
 
 import java.util.Date;
 
@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
 @Table(name = "usersgroupactivities", catalog = "run2gether_dev")
 public class Usersgroupactivities implements java.io.Serializable {
 
-	private static final long serialVersionUID = 5L;
+	private static final long serialVersionUID = 9L;
 	private UsersgroupactivitiesId id;
 	private Groupactivities groupactivities;
 	private Users users;
