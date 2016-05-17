@@ -35,7 +35,7 @@ public class Login {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response postLoginFb(JsonObject loginParams) {
-		Response result = Response.status(Status.BAD_REQUEST).build();
+		Response result = Response.status(401).build();
 		try {
 			if (loginParams.values().size() == 2) {
 				username = loginParams.getString("username").toString();
@@ -51,7 +51,7 @@ public class Login {
 						}
 
 			} else
-				return result;
+				result = Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
 			return Response.status(401).build();
 		}

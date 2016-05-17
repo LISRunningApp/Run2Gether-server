@@ -1,6 +1,7 @@
 package com.run2gether.backend.rest.Login;
 
 import java.util.Date;
+import java.util.HashSet;
 
 import javax.json.JsonObject;
 import javax.ws.rs.POST;
@@ -12,7 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.run2gether.backend.data.UsersRepository;
+import com.run2gether.backend.model.Activities;
+import com.run2gether.backend.model.Groupactivities;
 import com.run2gether.backend.model.Users;
+import com.run2gether.backend.model.Usersgroupactivities;
+import com.run2gether.backend.model.Userslogros;
+import com.run2gether.backend.model.wrappers.UsersWrapper;
 
 @Path("/Registry")
 @Component
@@ -28,32 +34,39 @@ public class Registry {
 		if (userRegister.containsKey("loginType") && userRegister.containsKey("username")
 				&& userRegister.containsKey("email"))
 			try {
-				if (usersRepository.getEspecificUser(userRegister.get("username").toString()) == null
-						&& usersRepository.getEspecificUser(userRegister.get("email").toString()) == null) {
-					String password = userRegister.get("password").toString();
+				UsersWrapper userSearch = usersRepository
+						.getEspecificUser(userRegister.get("username").toString().replaceAll("\"", ""));
+				UsersWrapper emailSearch = usersRepository
+						.getEspecificUser(userRegister.get("email").toString().replaceAll("\"", ""));
+				if (userSearch.getUsers().isEmpty() && emailSearch.getUsers().isEmpty()) {
+					// TODO la contraseña tiene que estar hasheada
 
-					String logintype = "db";
-					if (userRegister.get("loginType").toString().equalsIgnoreCase("facebook"))
-						logintype = "fb";
+					String password = "";
+					String logintype = "fb";
+					String type = userRegister.get("loginType").toString();
+					if (type.equalsIgnoreCase("\"db\"")) {
+						logintype = "db";
+						if (userRegister.containsKey("password")) {
+							password = userRegister.get("password").toString().replaceAll("\"", "");
+							if (password.isEmpty())
+								return Response.status(Status.BAD_REQUEST).build();
+						} else
+							return Response.status(Status.BAD_REQUEST).build();
+					}
 
-					newUser = new Users(userRegister.get("name").toString(), userRegister.get("surname").toString(),
-							userRegister.get("email").toString(), userRegister.get("username").toString(), password,
-							new Date(), new Date(), "disconnected", logintype,
-							Integer.parseInt(userRegister.get("age").toString()),
+					newUser = new Users(userRegister.get("name").toString().replaceAll("\"", ""),
+							userRegister.get("surname").toString().replaceAll("\"", ""),
+							userRegister.get("email").toString().replaceAll("\"", ""),
+							userRegister.get("username").toString().replaceAll("\"", ""), password, new Date(),
+							new Date(), "disconnected", logintype, Integer.parseInt(userRegister.get("age").toString()),
 							Integer.parseInt(userRegister.get("size").toString()),
-							Float.parseFloat(userRegister.get("weight").toString()), userRegister.get("sex").toString(),
-							null, null, null, null);
+							Float.parseFloat(userRegister.get("weight").toString()),
+							userRegister.get("sex").toString().replaceAll("\"", ""), new HashSet<Userslogros>(),
+							new HashSet<Groupactivities>(), new HashSet<Usersgroupactivities>(),
+							new HashSet<Activities>());
 
-					userRegister.get("name");
-					userRegister.get("surname");
-					userRegister.get("email");
-					userRegister.get("username");
-					userRegister.get("age");
-					userRegister.get("size");
-					userRegister.get("weight");
-					userRegister.get("sex");
-
-					userRegister.containsKey("password");
+					usersRepository.postUser(newUser);
+					result = Response.ok().build();
 				}
 			} catch (
 
@@ -61,7 +74,7 @@ public class Registry {
 				return Response.status(Status.BAD_REQUEST).build();
 
 			}
-		return null;
+		return result;
 
 	}
 
