@@ -16,16 +16,18 @@ public class BasicAuthentication extends Authentication {
 	private String password;
 
 	public BasicAuthentication(String authorization) {
+		try {
+			final String encodedUserPassword = authorization.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+			// Decode username and password
+			String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
 
-		final String encodedUserPassword = authorization.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
-		// Decode username and password
-		String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
-
-		// Split username and password tokens
-		final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
-		username = tokenizer.nextToken();
-		password = tokenizer.nextToken();
-
+			// Split username and password tokens
+			final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+			username = tokenizer.nextToken();
+			password = tokenizer.nextToken();
+		} catch (Exception e) {
+			throw new RuntimeException("Incorrecte send");
+		}
 	}
 
 	@Override

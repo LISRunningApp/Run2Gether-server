@@ -34,7 +34,7 @@ public class Login {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response postLoginFb(JsonObject loginParams) {
+	public Response LoginDB(JsonObject loginParams) {
 		Response result = Response.status(401).build();
 		try {
 			if (loginParams.values().size() == 2) {
@@ -56,6 +56,14 @@ public class Login {
 			return Response.status(401).build();
 		}
 		return result;
+	}
+
+	@Path("/facebook")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response LoginFb(JsonObject loginParams) {
+		return Response.status(200).build();
 	}
 
 }

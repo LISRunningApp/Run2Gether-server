@@ -26,6 +26,8 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
 	private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
 			.entity("You cannot access this resource").build();
+	private static final Response ACCESS_EXPECTATION_FAILED = Response.status(Response.Status.EXPECTATION_FAILED)
+			.entity("You cannot access this resource").build();
 	private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
 			.entity("Access blocked for all users !!").build();
 
@@ -67,11 +69,14 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 
 				try {
 					if (!auth.isAllowed(rolesSet)) {
-						requestContext.abortWith(ACCESS_DENIED);
+						requestContext.abortWith(ACCESS_EXPECTATION_FAILED);
 						return;
 					}
 				} catch (Exception e) {
 					log.debug("abort Conection");
+					requestContext.abortWith(ACCESS_DENIED);
+					return;
+
 				}
 			}
 		}
