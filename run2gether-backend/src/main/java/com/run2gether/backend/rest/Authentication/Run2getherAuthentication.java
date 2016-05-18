@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
+import com.run2gether.backend.rest.Authentication.Authentication._statesLogin;
+
 public class Run2getherAuthentication implements javax.ws.rs.container.ContainerRequestFilter {
 	Logger log = Logger.getLogger(Run2getherAuthentication.class);
 	@Context
@@ -55,10 +57,6 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 					return;
 				}
 
-				// TODO realizar el login para Facebook, comprovacion y BASIC a
-				// la
-				// vez
-				// Basic Authentification
 				if (authorization.get(0).contains(AUTHENTICATION_SCHEME))
 					auth = new BasicAuthentication(authorization.get(0));
 				else
@@ -68,10 +66,15 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 				Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
 
 				try {
-					if (!auth.isAllowed(rolesSet)) {
+					_statesLogin stateAutorize = auth.isAllowed(rolesSet);
+					if (stateAutorize == _statesLogin.EXPECTATION_FAILED) {
 						requestContext.abortWith(ACCESS_EXPECTATION_FAILED);
 						return;
-					}
+					} else if (stateAutorize == _statesLogin.UNAUTHORIZED) {
+						requestContext.abortWith(ACCESS_DENIED);
+						return;
+					} else if (stateAutorize == _statesLogin.OK)
+						log.debug("Correct authentification");
 				} catch (Exception e) {
 					log.debug("abort Conection");
 					requestContext.abortWith(ACCESS_DENIED);
@@ -80,6 +83,6 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 				}
 			}
 		}
-		log.debug("Correct authentification");
+
 	}
 }

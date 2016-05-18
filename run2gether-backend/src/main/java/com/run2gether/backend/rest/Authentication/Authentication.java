@@ -8,7 +8,11 @@ import java.util.Hashtable;
 import java.util.Set;
 
 abstract public class Authentication {
-	abstract public boolean isAllowed(Set<String> rolesSet);
+	protected enum _statesLogin {
+		OK, UNAUTHORIZED, EXPECTATION_FAILED
+	};
+
+	abstract public _statesLogin isAllowed(Set<String> rolesSet);
 
 	protected ArrayList<Hashtable<String, String>> ConectServer(String username) {
 		String url = "jdbc:mysql://localhost:3306/";

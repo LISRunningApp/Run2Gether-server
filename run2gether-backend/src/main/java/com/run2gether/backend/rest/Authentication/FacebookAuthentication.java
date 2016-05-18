@@ -26,16 +26,16 @@ public class FacebookAuthentication extends Authentication {
 	}
 
 	@Override
-	public boolean isAllowed(Set<String> rolesSet) {
-		boolean isAllowed = false;
+	public _statesLogin isAllowed(Set<String> rolesSet) {
+		_statesLogin isAllowed = _statesLogin.EXPECTATION_FAILED;
 		try {
 			ArrayList<Hashtable<String, String>> listUserFbAccess = FbConectServer();
 			ArrayList<Hashtable<String, String>> listUsers = ConectServer(listUserFbAccess.get(0).get("id"));
 			for (Hashtable<String, String> i : listUsers)
 				if (i.get("username").equalsIgnoreCase(listUserFbAccess.get(0).get("id")))
-					isAllowed = true;
+					isAllowed = _statesLogin.OK;
 		} catch (Exception e) {
-			return false;
+			return _statesLogin.UNAUTHORIZED;
 		}
 		return isAllowed;
 	}

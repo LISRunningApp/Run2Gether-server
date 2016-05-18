@@ -31,17 +31,18 @@ public class BasicAuthentication extends Authentication {
 	}
 
 	@Override
-	public boolean isAllowed(Set<String> rolesSet) {
+	public _statesLogin isAllowed(Set<String> rolesSet) {
 		ArrayList<Hashtable<String, String>> listUsers = ConectServer(username);
-		boolean isAllowed = false;
+		_statesLogin isAllowed = _statesLogin.EXPECTATION_FAILED;
 		for (Hashtable<String, String> i : listUsers)
 			if (i.get("username").equalsIgnoreCase(username) || i.get("email").equalsIgnoreCase(username))
 				// TODO La contraseña se guardara Hasheada
 				if (i.get("password").equals(password)) {
 				String userRole = "USER";
 				if (rolesSet.contains(userRole))
-				isAllowed = true;
-				}
+				isAllowed = _statesLogin.OK;
+				} else
+				isAllowed = _statesLogin.UNAUTHORIZED;
 		return isAllowed;
 	}
 
