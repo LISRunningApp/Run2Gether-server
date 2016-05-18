@@ -1,8 +1,15 @@
 package com.run2gether.backend.rest.Login;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Base64;
 
+import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -35,7 +42,7 @@ public class Login {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response LoginDB(JsonObject loginParams) {
-		Response result = Response.status(401).build();
+		Response result = Response.status(417).build();
 		try {
 			if (loginParams.values().size() == 2) {
 				username = loginParams.getString("username").toString();
@@ -48,12 +55,13 @@ public class Login {
 							String encodedUserPassword = new String(Base64.getEncoder().encode(token.getBytes()));
 							String authorization = AUTHENTICATION_SCHEME.concat(" ").concat(encodedUserPassword);
 							result = Response.ok(authorization).build();
-						}
+						} else
+							result = Response.status(401).build();
 
 			} else
 				result = Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			return Response.status(401).build();
+			return Response.status(400).build();
 		}
 		return result;
 	}
@@ -63,7 +71,40 @@ public class Login {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response LoginFb(JsonObject loginParams) {
-		return Response.status(200).build();
+		Response result = Response.status(417).build();
+		String token = loginParams.getString("token").toString();
+		String idQuery = loginParams.getString("id").toString();
+		String idFacebook;
+		String graph = null;
+		try {
+			String g = "https://graph.facebook.com/v2.6/me?access_token=" + token;
+			URL u = new URL(g);
+			URLConnection c = u.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
+			String inputLine;
+			StringBuffer b = new StringBuffer();
+			while ((inputLine = in.readLine()) != null)
+				b.append(inputLine + "\n");
+			in.close();
+			graph = b.toString();
+			// la peticion html que me envia facebook paso al json y leo de ahi
+			// los datos
+			JsonReader read = Json.createReader(new StringReader(graph));
+			JsonObject json = read.readObject();
+			idFacebook = json.getString("id");
+		} catch (Exception e) {
+			return Response.status(400).build();
+		}
+		if (idFacebook.equalsIgnoreCase(idQuery)) {
+			UsersWrapper wListUser = usersRepository.getEspecificUser(idQuery);
+			for (Users i : wListUser.getUsers())
+				if (i.getUsername().equalsIgnoreCase(idQuery))
+					result = Response.status(200).build();
+				else
+					result = Response.status(401).build();
+		} else
+			result = Response.status(401).build();
+		return result;
 	}
 
 }
