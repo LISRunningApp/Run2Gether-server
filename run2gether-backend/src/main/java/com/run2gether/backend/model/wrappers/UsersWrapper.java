@@ -12,12 +12,11 @@ import com.run2gether.backend.model.Users;
 public class UsersWrapper {
 
 	final Logger log = Logger.getLogger(UsersWrapper.class);
+	private List<Users> users;
 
 	public UsersWrapper(List<Users> users) {
 		this.users = users;
 	}
-
-	private List<Users> users;
 
 	@JsonValue
 	public List<Users> getUsers() {

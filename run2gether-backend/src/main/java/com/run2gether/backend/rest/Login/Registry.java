@@ -20,7 +20,7 @@ import com.run2gether.backend.model.Usersgroupactivities;
 import com.run2gether.backend.model.Userslogros;
 import com.run2gether.backend.model.wrappers.UsersWrapper;
 
-@Path("/Registry")
+@Path("/register")
 @Component
 public class Registry {
 

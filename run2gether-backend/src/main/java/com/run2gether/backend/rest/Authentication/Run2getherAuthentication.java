@@ -14,33 +14,34 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 
 import org.apache.log4j.Logger;
 
 import com.run2gether.backend.rest.Authentication.Authentication._statesLogin;
 
+@Provider
 public class Run2getherAuthentication implements javax.ws.rs.container.ContainerRequestFilter {
+
 	Logger log = Logger.getLogger(Run2getherAuthentication.class);
+
 	@Context
 	private ResourceInfo resourceInfo;
+
 	private static Authentication auth = null;
 	private static final String AUTHENTICATION_SCHEME = "Basic";
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
-	private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
-			.entity("You cannot access this resource").build();
-	private static final Response ACCESS_EXPECTATION_FAILED = Response.status(Response.Status.EXPECTATION_FAILED)
-			.entity("You cannot access this resource").build();
-	private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
-			.entity("Access blocked for all users !!").build();
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) {
 		Method method = resourceInfo.getResourceMethod();
+		Response res;
 		// Access allowed for all
 		if (!method.isAnnotationPresent(PermitAll.class)) {
 			// Access denied for all
 			if (method.isAnnotationPresent(DenyAll.class)) {
-				requestContext.abortWith(ACCESS_FORBIDDEN);
+				res = Response.status(Response.Status.FORBIDDEN).entity("Access blocked for all users !!").build();
+				requestContext.abortWith(res);
 				return;
 			}
 
@@ -53,7 +54,9 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 
 				// If no authorization information present; block access
 				if (authorization == null || authorization.isEmpty()) {
-					requestContext.abortWith(ACCESS_DENIED);
+					res = Response.status(Response.Status.UNAUTHORIZED).entity("You cannot access this resource")
+							.build();
+					requestContext.abortWith(res);
 					return;
 				}
 
@@ -68,16 +71,22 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 				try {
 					_statesLogin stateAutorize = auth.isAllowed(rolesSet);
 					if (stateAutorize == _statesLogin.EXPECTATION_FAILED) {
-						requestContext.abortWith(ACCESS_EXPECTATION_FAILED);
+						res = Response.status(Response.Status.EXPECTATION_FAILED)
+								.entity("You cannot access this resource").build();
+						requestContext.abortWith(res);
 						return;
 					} else if (stateAutorize == _statesLogin.UNAUTHORIZED) {
-						requestContext.abortWith(ACCESS_DENIED);
+						res = Response.status(Response.Status.UNAUTHORIZED).entity("You cannot access this resource")
+								.build();
+						requestContext.abortWith(res);
 						return;
 					} else if (stateAutorize == _statesLogin.OK)
 						log.debug("Correct authentification");
 				} catch (Exception e) {
 					log.debug("abort Conection");
-					requestContext.abortWith(ACCESS_DENIED);
+					res = Response.status(Response.Status.UNAUTHORIZED).entity("You cannot access this resource")
+							.build();
+					requestContext.abortWith(res);
 					return;
 
 				}

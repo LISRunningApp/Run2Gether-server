@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.Set;
 
 abstract public class Authentication {
+
 	protected enum _statesLogin {
 		OK, UNAUTHORIZED, EXPECTATION_FAILED
 	};
@@ -18,8 +19,8 @@ abstract public class Authentication {
 		String url = "jdbc:mysql://localhost:3306/";
 		String dbName = "run2gether_dev";
 		String driver = "com.mysql.jdbc.Driver";
-		String userName = "root";
-		String password = "";
+		String userName = "dev";
+		String password = "miaumiau";
 		ArrayList<Hashtable<String, String>> listUser = new ArrayList<Hashtable<String, String>>();
 		try {
 			Class.forName(driver).newInstance();
