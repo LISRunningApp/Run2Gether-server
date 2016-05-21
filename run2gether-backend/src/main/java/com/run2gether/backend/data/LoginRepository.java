@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.run2gether.backend.model.QUsers;
-import com.run2gether.backend.model.Users;
+import com.run2gether.backend.model.QUser;
+import com.run2gether.backend.model.User;
 
 @Repository
 public class LoginRepository {
@@ -22,9 +22,9 @@ public class LoginRepository {
 
 	@Transactional
 	public void postLoginFb(String name, String idFace, String token) {
-		JPQLQuery<Users> query = new JPAQuery<>(em);
-		QUsers qusers = QUsers.users;
-		Users user = query.from(qusers).where(qusers.username.eq(idFace)).fetchOne();
+		JPQLQuery<User> query = new JPAQuery<>(em);
+		QUser qusers = QUser.user;
+		User user = query.from(qusers).where(qusers.username.eq(idFace)).fetchOne();
 		user.getAge();
 	}
 

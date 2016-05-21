@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 16-may-2016 18:34:41 by Hibernate Tools 5.1.0.Alpha1
+// Generated 21-may-2016 10:44:53 by Hibernate Tools 5.1.0.Alpha1
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,25 +10,25 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class CheckpointId implements java.io.Serializable {
 
-	private static final long serialVersionUID = 3L;
-	private int idActivitie;
+	private static final long serialVersionUID = 4L;
+	private int idActivity;
 	private double meter;
 
 	public CheckpointId() {
 	}
 
-	public CheckpointId(int idActivitie, double meter) {
-		this.idActivitie = idActivitie;
+	public CheckpointId(int idActivity, double meter) {
+		this.idActivity = idActivity;
 		this.meter = meter;
 	}
 
-	@Column(name = "idActivitie", nullable = false)
-	public int getIdActivitie() {
-		return idActivitie;
+	@Column(name = "id_activity", nullable = false)
+	public int getIdActivity() {
+		return idActivity;
 	}
 
-	public void setIdActivitie(int idActivitie) {
-		this.idActivitie = idActivitie;
+	public void setIdActivity(int idActivity) {
+		this.idActivity = idActivity;
 	}
 
 	@Column(name = "meter", nullable = false, precision = 22, scale = 0)
@@ -50,14 +50,14 @@ public class CheckpointId implements java.io.Serializable {
 			return false;
 		CheckpointId castOther = (CheckpointId) other;
 
-		return getIdActivitie() == castOther.getIdActivitie() && getMeter() == castOther.getMeter();
+		return getIdActivity() == castOther.getIdActivity() && getMeter() == castOther.getMeter();
 	}
 
 	@Override
 	public int hashCode() {
 		int result = 17;
 
-		result = 37 * result + getIdActivitie();
+		result = 37 * result + getIdActivity();
 		result = 37 * result + (int) getMeter();
 		return result;
 	}

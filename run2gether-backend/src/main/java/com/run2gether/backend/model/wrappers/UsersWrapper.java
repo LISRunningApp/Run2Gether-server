@@ -6,25 +6,25 @@ import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.run2gether.backend.model.Users;
+import com.run2gether.backend.model.User;
 
 @JsonRootName(value = "users")
 public class UsersWrapper {
 
 	final Logger log = Logger.getLogger(UsersWrapper.class);
-	private List<Users> users;
+	private List<User> user;
 
-	public UsersWrapper(List<Users> users) {
-		this.users = users;
+	public UsersWrapper(List<User> user) {
+		this.user = user;
 	}
 
 	@JsonValue
-	public List<Users> getUsers() {
-		return users;
+	public List<User> getUser() {
+		return user;
 	}
 
-	public void setUsers(List<Users> list) {
-		users = list;
+	public void setUsers(List<User> list) {
+		user = list;
 	}
 
 }

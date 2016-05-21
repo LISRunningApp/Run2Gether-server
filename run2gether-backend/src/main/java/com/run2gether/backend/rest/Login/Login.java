@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.run2gether.backend.data.UsersRepository;
-import com.run2gether.backend.model.Users;
+import com.run2gether.backend.model.User;
 import com.run2gether.backend.model.wrappers.UsersWrapper;
 
 @Path("/login")
@@ -48,7 +48,7 @@ public class Login {
 				username = loginParams.getString("username").toString();
 				password = loginParams.getString("password").toString();
 				UsersWrapper wListUser = usersRepository.getEspecificUser(username);
-				for (Users i : wListUser.getUsers())
+				for (User i : wListUser.getUser())
 					if (i.getEmail().equalsIgnoreCase(username) || i.getUsername().equalsIgnoreCase(username))
 						if (i.getPassword().equalsIgnoreCase(password)) {
 							String token = username + ":" + password;
@@ -97,7 +97,7 @@ public class Login {
 		}
 		if (idFacebook.equalsIgnoreCase(idQuery)) {
 			UsersWrapper wListUser = usersRepository.getEspecificUser(idQuery);
-			for (Users i : wListUser.getUsers())
+			for (User i : wListUser.getUser())
 				if (i.getUsername().equalsIgnoreCase(idQuery))
 					result = Response.status(200).build();
 				else

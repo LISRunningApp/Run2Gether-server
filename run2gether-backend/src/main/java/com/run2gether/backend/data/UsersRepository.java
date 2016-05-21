@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.run2gether.backend.model.QUsers;
-import com.run2gether.backend.model.Users;
+import com.run2gether.backend.model.QUser;
+import com.run2gether.backend.model.User;
 import com.run2gether.backend.model.wrappers.UsersWrapper;
 
 @Repository
@@ -25,14 +25,14 @@ public class UsersRepository {
 
 	@Transactional
 	public UsersWrapper getAllUsers() {
-		JPQLQuery<Users> query = new JPAQuery<>(em);
-		QUsers qusers = QUsers.users;
+		JPQLQuery<User> query = new JPAQuery<>(em);
+		QUser qusers = QUser.user;
 		UsersWrapper usersWrapper = new UsersWrapper(query.from(qusers).fetch());
 		return usersWrapper;
 	}
 
 	@Transactional
-	public void postUser(Users newUser) {
+	public void postUser(User newUser) {
 		newUser.setCreationDate(new LocalDateTime().toDate());
 		newUser.setLastLogin(new LocalDateTime().toDate());
 		em.persist(newUser);
@@ -40,9 +40,9 @@ public class UsersRepository {
 
 	@Transactional
 	public UsersWrapper getEspecificUser(String idUser) {
-		JPQLQuery<Users> query = new JPAQuery<>(em);
-		QUsers qu = QUsers.users;
-		BooleanExpression wh = QUsers.users.email.eq(idUser).or(QUsers.users.username.eq(idUser));
+		JPQLQuery<User> query = new JPAQuery<>(em);
+		QUser qu = QUser.user;
+		BooleanExpression wh = QUser.user.email.eq(idUser).or(QUser.user.username.eq(idUser));
 		UsersWrapper usersWrapper = new UsersWrapper(query.from(qu).where(wh).fetch());
 		return usersWrapper;
 

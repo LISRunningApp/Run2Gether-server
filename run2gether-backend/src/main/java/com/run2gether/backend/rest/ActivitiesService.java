@@ -7,7 +7,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.run2gether.backend.model.Activities;
+import com.run2gether.backend.model.Activity;
 
 @Path("/activities")
 public class ActivitiesService {
@@ -16,7 +16,7 @@ public class ActivitiesService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{date}")
-	public Activities getActivity(@PathParam("username") String username, @PathParam("date") String date) {
+	public Activity getActivity(@PathParam("username") String username, @PathParam("date") String date) {
 		// SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 		// Date dateQuerry = formatter.parse(date);
 

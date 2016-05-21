@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 16-may-2016 18:34:41 by Hibernate Tools 5.1.0.Alpha1
+// Generated 21-may-2016 10:44:53 by Hibernate Tools 5.1.0.Alpha1
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,19 +10,19 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class FriendId implements java.io.Serializable {
 
-	private static final long serialVersionUID = 5L;
+	private static final long serialVersionUID = 6L;
 	private int idUser;
-	private String idFriend;
+	private int idFriend;
 
 	public FriendId() {
 	}
 
-	public FriendId(int idUser, String idFriend) {
+	public FriendId(int idUser, int idFriend) {
 		this.idUser = idUser;
 		this.idFriend = idFriend;
 	}
 
-	@Column(name = "idUser", nullable = false)
+	@Column(name = "id_user", nullable = false)
 	public int getIdUser() {
 		return idUser;
 	}
@@ -31,12 +31,12 @@ public class FriendId implements java.io.Serializable {
 		this.idUser = idUser;
 	}
 
-	@Column(name = "idFriend", nullable = false, length = 45)
-	public String getIdFriend() {
+	@Column(name = "id_friend", nullable = false)
+	public int getIdFriend() {
 		return idFriend;
 	}
 
-	public void setIdFriend(String idFriend) {
+	public void setIdFriend(int idFriend) {
 		this.idFriend = idFriend;
 	}
 
@@ -50,9 +50,7 @@ public class FriendId implements java.io.Serializable {
 			return false;
 		FriendId castOther = (FriendId) other;
 
-		return getIdUser() == castOther.getIdUser()
-				&& (getIdFriend() == castOther.getIdFriend() || getIdFriend() != null && castOther.getIdFriend() != null
-						&& getIdFriend().equals(castOther.getIdFriend()));
+		return getIdUser() == castOther.getIdUser() && getIdFriend() == castOther.getIdFriend();
 	}
 
 	@Override
@@ -60,7 +58,7 @@ public class FriendId implements java.io.Serializable {
 		int result = 17;
 
 		result = 37 * result + getIdUser();
-		result = 37 * result + (getIdFriend() == null ? 0 : getIdFriend().hashCode());
+		result = 37 * result + getIdFriend();
 		return result;
 	}
 
