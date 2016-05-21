@@ -21,6 +21,8 @@ abstract public class Authentication {
 		String driver = "com.mysql.jdbc.Driver";
 		String userName = "dev";
 		String password = "miaumiau";
+		// String userName = "root";
+		// String password = "";
 		ArrayList<Hashtable<String, String>> listUser = new ArrayList<Hashtable<String, String>>();
 		try {
 			Class.forName(driver).newInstance();
