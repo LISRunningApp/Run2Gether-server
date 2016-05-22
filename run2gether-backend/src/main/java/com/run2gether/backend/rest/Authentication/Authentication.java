@@ -28,7 +28,7 @@ abstract public class Authentication {
 			Class.forName(driver).newInstance();
 			java.sql.Connection conn = DriverManager.getConnection(url + dbName, userName, password);
 			Statement st = conn.createStatement();
-			String query = "SELECT password, email, username, login_type  FROM  users where email= '" + username
+			String query = "SELECT password, email, username, login_type  FROM  user where email= '" + username
 					+ "' or username = '" + username + "'";
 			ResultSet res = st.executeQuery(query);
 
