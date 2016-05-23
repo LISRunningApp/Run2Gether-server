@@ -7,9 +7,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.stereotype.Component;
+
 import com.run2gether.backend.model.Activity;
 
 @Path("/activities")
+@Component
 public class ActivitiesService {
 
 	@RolesAllowed("USER")
