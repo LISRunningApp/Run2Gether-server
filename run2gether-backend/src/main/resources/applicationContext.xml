@@ -16,6 +16,7 @@
 	</context:component-scan>
 	
 	<context:spring-configured />
+	
 	<context:annotation-config />
 
 	<jee:jndi-lookup jndi-name="jdbc/run2gether-db" id="dataSource"
