@@ -4,33 +4,25 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
 	<context:component-scan
-		base-package="com.run2gether.backend.data">
-	</context:component-scan>
-	
-	<context:component-scan
-		base-package="com.run2gether.backend.rest">
+		base-package="com.run2gether.backend">
 	</context:component-scan>
 	
 	<context:spring-configured />
 	<context:annotation-config />
 	
-	
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+
 	<jee:jndi-lookup jndi-name="jdbc/run2gether-db" id="dataSource"
 		expected-type="javax.sql.DataSource">
 	</jee:jndi-lookup>
-
-<!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
-<!-- 	    <property name="driverClassName" value="${jdbc.driverClassName}" /> -->
-<!-- 	    <property name="url" value="${jdbc.url}" /> -->
-<!-- 	    <property name="username" value="${jdbc.username}" /> -->
-<!-- 	    <property name="password" value="${jdbc.password}" /> -->
-<!-- 	</bean> -->
 	
 	<bean id="persistenceUnitManager" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
     	<property name="defaultDataSource" ref="dataSource" />
@@ -45,7 +37,9 @@
 	    <property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	
-	<tx:annotation-driven transaction-manager="transactionManager" />
-
+	<bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy"></bean>
 	
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
 </beans>

@@ -32,7 +32,7 @@ public class BasicAuthentication extends Authentication {
 
 	@Override
 	public _statesLogin isAllowed(Set<String> rolesSet) {
-		ArrayList<Hashtable<String, String>> listUsers = ConectServer(username);
+		ArrayList<Hashtable<String, String>> listUsers = ConnectServer(username);
 		_statesLogin isAllowed = _statesLogin.EXPECTATION_FAILED;
 		for (Hashtable<String, String> i : listUsers)
 			if (i.get("username").equalsIgnoreCase(username) || i.get("email").equalsIgnoreCase(username))

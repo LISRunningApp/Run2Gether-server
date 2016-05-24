@@ -17,10 +17,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.run2gether.backend.rest.Authentication.Authentication._statesLogin;
 
 @Provider
+@Component
 public class Run2getherAuthentication implements javax.ws.rs.container.ContainerRequestFilter {
 
 	Logger log = Logger.getLogger(Run2getherAuthentication.class);
@@ -84,6 +86,7 @@ public class Run2getherAuthentication implements javax.ws.rs.container.Container
 						log.debug("Correct authentification");
 				} catch (Exception e) {
 					log.debug("abort Conection");
+					e.printStackTrace();
 					res = Response.status(Response.Status.UNAUTHORIZED).entity("You cannot access this resource")
 							.build();
 					requestContext.abortWith(res);

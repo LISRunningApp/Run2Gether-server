@@ -30,7 +30,7 @@ public class FacebookAuthentication extends Authentication {
 		_statesLogin isAllowed = _statesLogin.EXPECTATION_FAILED;
 		try {
 			ArrayList<Hashtable<String, String>> listUserFbAccess = FbConectServer();
-			ArrayList<Hashtable<String, String>> listUsers = ConectServer(listUserFbAccess.get(0).get("id"));
+			ArrayList<Hashtable<String, String>> listUsers = ConnectServer(listUserFbAccess.get(0).get("id"));
 			for (Hashtable<String, String> i : listUsers)
 				if (i.get("username").equalsIgnoreCase(listUserFbAccess.get(0).get("id")))
 					isAllowed = _statesLogin.OK;

@@ -7,7 +7,16 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.run2gether.backend.data.UsersRepository;
+
+@Component
 abstract public class Authentication {
+
+	@Autowired
+	private UsersRepository usersRepository;
 
 	protected enum _statesLogin {
 		OK, UNAUTHORIZED, EXPECTATION_FAILED
@@ -15,12 +24,13 @@ abstract public class Authentication {
 
 	abstract public _statesLogin isAllowed(Set<String> rolesSet);
 
-	protected ArrayList<Hashtable<String, String>> ConectServer(String username) {
+	protected ArrayList<Hashtable<String, String>> ConnectServer(String username) {
 		String url = "jdbc:mysql://localhost:3306/";
 		String dbName = "run2gether_dev";
 		String driver = "com.mysql.jdbc.Driver";
 		String userName = "dev";
 		String password = "miaumiau";
+		usersRepository.getAllUsers();
 		// String userName = "root";
 		// String password = "";
 		ArrayList<Hashtable<String, String>> listUser = new ArrayList<Hashtable<String, String>>();
