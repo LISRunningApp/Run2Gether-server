@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 21-may-2016 10:44:53 by Hibernate Tools 5.1.0.Alpha1
+// Generated 24-may-2016 23:17:21 by Hibernate Tools 5.1.0.Alpha1
 
 import java.util.Date;
 

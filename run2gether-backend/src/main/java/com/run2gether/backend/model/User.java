@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 21-may-2016 10:44:53 by Hibernate Tools 5.1.0.Alpha1
+// Generated 24-may-2016 23:17:21 by Hibernate Tools 5.1.0.Alpha1
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -47,7 +47,7 @@ public class User implements java.io.Serializable {
 	private Date dateModified;
 	private Set<Userachievement> userachievements = new HashSet<Userachievement>(0);
 	private Set<Friend> friendsForIdFriend = new HashSet<Friend>(0);
-	private Set<Groupactivitiy> groupactivitiys = new HashSet<Groupactivitiy>(0);
+	private Set<Groupactivity> groupactivities = new HashSet<Groupactivity>(0);
 	private Set<Activity> activities = new HashSet<Activity>(0);
 	private Set<Friend> friendsForIdUser = new HashSet<Friend>(0);
 	private Set<Usergroupactivity> usergroupactivities = new HashSet<Usergroupactivity>(0);
@@ -86,7 +86,7 @@ public class User implements java.io.Serializable {
 	public User(String name, String surname, String email, String username, String password, Date creationDate,
 			Date lastLogin, String status, String loginType, Integer age, Integer size, Float weight, String sex,
 			Date dateModified, Set<Userachievement> userachievements, Set<Friend> friendsForIdFriend,
-			Set<Groupactivitiy> groupactivitiys, Set<Activity> activities, Set<Friend> friendsForIdUser,
+			Set<Groupactivity> groupactivities, Set<Activity> activities, Set<Friend> friendsForIdUser,
 			Set<Usergroupactivity> usergroupactivities) {
 		this.name = name;
 		this.surname = surname;
@@ -104,7 +104,7 @@ public class User implements java.io.Serializable {
 		this.dateModified = dateModified;
 		this.userachievements = userachievements;
 		this.friendsForIdFriend = friendsForIdFriend;
-		this.groupactivitiys = groupactivitiys;
+		this.groupactivities = groupactivities;
 		this.activities = activities;
 		this.friendsForIdUser = friendsForIdUser;
 		this.usergroupactivities = usergroupactivities;
@@ -112,7 +112,6 @@ public class User implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@XmlTransient
 	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
@@ -274,12 +273,12 @@ public class User implements java.io.Serializable {
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-	public Set<Groupactivitiy> getGroupactivitiys() {
-		return groupactivitiys;
+	public Set<Groupactivity> getGroupactivities() {
+		return groupactivities;
 	}
 
-	public void setGroupactivitiys(Set<Groupactivitiy> groupactivitiys) {
-		this.groupactivitiys = groupactivitiys;
+	public void setGroupactivities(Set<Groupactivity> groupactivities) {
+		this.groupactivities = groupactivities;
 	}
 
 	@JsonIgnore

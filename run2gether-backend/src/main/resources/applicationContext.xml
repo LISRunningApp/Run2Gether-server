@@ -17,8 +17,6 @@
 	
 	<context:spring-configured />
 	<context:annotation-config />
-	
-	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
 
 	<jee:jndi-lookup jndi-name="jdbc/run2gether-db" id="dataSource"
 		expected-type="javax.sql.DataSource">
@@ -37,9 +35,6 @@
 	    <property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	
-	<bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy"></bean>
-	
-	<tx:annotation-driven transaction-manager="transactionManager"
-		proxy-target-class="true" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

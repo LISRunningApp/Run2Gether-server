@@ -1,5 +1,5 @@
 package com.run2gether.backend.model;
-// Generated 21-may-2016 10:44:53 by Hibernate Tools 5.1.0.Alpha1
+// Generated 24-may-2016 23:17:21 by Hibernate Tools 5.1.0.Alpha1
 
 import java.util.Date;
 
@@ -24,7 +24,7 @@ public class Usergroupactivity implements java.io.Serializable {
 
 	private static final long serialVersionUID = 11L;
 	private UsergroupactivityId id;
-	private Groupactivitiy groupactivitiy;
+	private Groupactivity groupactivity;
 	private User user;
 	private Date date;
 	private Date dateModified;
@@ -32,17 +32,17 @@ public class Usergroupactivity implements java.io.Serializable {
 	public Usergroupactivity() {
 	}
 
-	public Usergroupactivity(UsergroupactivityId id, Groupactivitiy groupactivitiy, User user, Date date) {
+	public Usergroupactivity(UsergroupactivityId id, Groupactivity groupactivity, User user, Date date) {
 		this.id = id;
-		this.groupactivitiy = groupactivitiy;
+		this.groupactivity = groupactivity;
 		this.user = user;
 		this.date = date;
 	}
 
-	public Usergroupactivity(UsergroupactivityId id, Groupactivitiy groupactivitiy, User user, Date date,
+	public Usergroupactivity(UsergroupactivityId id, Groupactivity groupactivity, User user, Date date,
 			Date dateModified) {
 		this.id = id;
-		this.groupactivitiy = groupactivitiy;
+		this.groupactivity = groupactivity;
 		this.user = user;
 		this.date = date;
 		this.dateModified = dateModified;
@@ -63,12 +63,12 @@ public class Usergroupactivity implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_groupactivities", nullable = false, insertable = false, updatable = false)
-	public Groupactivitiy getGroupactivitiy() {
-		return groupactivitiy;
+	public Groupactivity getGroupactivity() {
+		return groupactivity;
 	}
 
-	public void setGroupactivitiy(Groupactivitiy groupactivitiy) {
-		this.groupactivitiy = groupactivitiy;
+	public void setGroupactivity(Groupactivity groupactivity) {
+		this.groupactivity = groupactivity;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
