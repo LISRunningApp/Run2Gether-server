@@ -78,7 +78,7 @@ public class MessagingService {
 		if (os_name.startsWith("Windows"))
 			upload_path = System.getProperty("user.home") + "\\Run2Gether\\uploads\\";
 		else if (os_name.startsWith("Linux"))
-			upload_path = "/opt/tomcat/webapps/run2gether/WEB-INF/media/uploads";
+			upload_path = "/opt/tomcat/webapps/run2gether/WEB-INF/media/uploads/";
 
 		File file = new File(upload_path);
 		if (!file.exists())
