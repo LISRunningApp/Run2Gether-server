@@ -14,30 +14,34 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.run2gether.backend.model.Activity;
-import com.run2gether.backend.model.QActivity;
+import com.run2gether.backend.model.QCheckpoint;
+import com.run2gether.backend.model.QUser;
 import com.run2gether.backend.model.wrappers.ActivitiesWrapper;
 
 @Repository
-public class ActivitiesRepository {
+public class CheckpointRepository {
 
 	@PersistenceContext
 	private EntityManager em;
 
-	final Logger log = Logger.getLogger(ActivitiesRepository.class);
+	final Logger log = Logger.getLogger(CheckpointRepository.class);
 
 	@Transactional
+
 	public ActivitiesWrapper setActivities(Date date, String username) {
 		JPQLQuery<Activity> query = new JPAQuery<>(em);
-		QActivity qu = QActivity.activity;
-		BooleanExpression wh = QActivity.activity.user.username.eq(username)
-				.and(QActivity.activity.dateModified.eq(date));
-		ActivitiesWrapper activityWrapper = new ActivitiesWrapper(query.from(qu).where(wh).fetch());
+		QCheckpoint qc = QCheckpoint.checkpoint;
+		QUser qu = QUser.user;
+		BooleanExpression wh = QCheckpoint.checkpoint.activity.user.username.eq(username)
+				.and(QCheckpoint.checkpoint.dateModified.eq(date));
+		ActivitiesWrapper activityWrapper = new ActivitiesWrapper(query.from(qu, qc).where(wh).fetch());
 		return activityWrapper;
 	}
 
 	@Transactional
-	public void postUser(Activity newActivities) {
-		newActivities.setDateModified(new LocalDateTime().toDate());
-		em.persist(newActivities);
+	public void postUser(Activity newCheckpoint) {
+		newCheckpoint.setDateModified(new LocalDateTime().toDate());
+		em.persist(newCheckpoint);
 	}
+
 }
