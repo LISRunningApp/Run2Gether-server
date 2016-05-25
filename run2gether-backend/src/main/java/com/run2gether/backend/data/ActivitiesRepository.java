@@ -26,7 +26,7 @@ public class ActivitiesRepository {
 	final Logger log = Logger.getLogger(ActivitiesRepository.class);
 
 	@Transactional
-	public ActivitiesWrapper setActivities(Date date, String username) {
+	public ActivitiesWrapper getActivities(Date date, String username) {
 		JPQLQuery<Activity> query = new JPAQuery<>(em);
 		QActivity qu = QActivity.activity;
 		BooleanExpression wh = QActivity.activity.user.username.eq(username)
@@ -36,7 +36,7 @@ public class ActivitiesRepository {
 	}
 
 	@Transactional
-	public void postUser(Activity newActivities) {
+	public void postActivity(Activity newActivities) {
 		newActivities.setDateModified(new LocalDateTime().toDate());
 		em.persist(newActivities);
 	}

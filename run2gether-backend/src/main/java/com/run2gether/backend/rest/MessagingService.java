@@ -1,21 +1,30 @@
 package com.run2gether.backend.rest;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
 import org.apache.log4j.Logger;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -66,10 +75,11 @@ public class MessagingService {
 		return gcm_token;
 	}
 
+	// @RolesAllowed("USER")
 	@POST
 	@Path("/upload")
 	@Consumes({ MediaType.MULTIPART_FORM_DATA })
-	public Response uploadPdfFile(@FormDataParam("file") InputStream fileInputStream,
+	public Response uploadAudioFile(@FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileMetaData) throws Exception {
 		String os_name = System.getProperty("os.name");
 		String upload_path = "";
@@ -79,6 +89,10 @@ public class MessagingService {
 			upload_path = System.getProperty("user.home") + "\\Run2Gether\\uploads\\";
 		else if (os_name.startsWith("Linux"))
 			upload_path = "/opt/tomcat/webapps/run2gether/WEB-INF/media/uploads/";
+		else {
+			log.error("Unrecognized server OS type");
+			throw new WebApplicationException("Unrecognized server OS");
+		}
 
 		File file = new File(upload_path);
 		if (!file.exists())
@@ -100,5 +114,40 @@ public class MessagingService {
 			throw new WebApplicationException("Error while uploading file. Please try again !!");
 		}
 		return Response.ok("Data uploaded successfully !!").build();
+	}
+
+	@GET
+	@Path("/stream/{audio_file}")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public Response streamAudioFile(@PathParam(value = "audio_file") String audioName,
+			@HeaderParam("Range") String range) {
+
+		String os_name = System.getProperty("os.name");
+		String stream_path = "";
+
+		if (os_name.startsWith("Windows"))
+			stream_path = System.getProperty("user.home") + "\\Run2Gether\\uploads\\";
+		else if (os_name.startsWith("Linux"))
+			stream_path = "/opt/tomcat/webapps/run2gether/WEB-INF/media/uploads/";
+		else {
+			log.error("Unrecognized server OS type");
+			throw new WebApplicationException("Unrecognized server OS");
+		}
+
+		final File asset = new File(stream_path + audioName + ".mp3");
+
+		StreamingOutput streamer = output -> {
+			final FileChannel inputChannel = new FileInputStream(asset).getChannel();
+			final WritableByteChannel outputChannel = Channels.newChannel(output);
+			try {
+				inputChannel.transferTo(0, inputChannel.size(), outputChannel);
+			} finally {
+				// closing the channels
+				inputChannel.close();
+				outputChannel.close();
+			}
+		};
+
+		return Response.ok(streamer).header(HttpHeaders.CONTENT_LENGTH, asset.length()).build();
 	}
 }
