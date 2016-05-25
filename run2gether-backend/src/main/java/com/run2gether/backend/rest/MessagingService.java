@@ -12,7 +12,6 @@ import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -44,21 +43,58 @@ public class MessagingService {
 	private static final String SENDER_ID = "AIzaSyDHZlbpoZLwSsAmk2xYkui9nL6yW9qOnls";
 
 	// @RolesAllowed("USER")
-	@Path("/register")
+	@Path("/send")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public JsonObject sendAudio(JsonObject gcm_token) {
-		String token = gcm_token.get("gcm-token").toString().replaceAll("\"", "");
-		String messageText = "A dormir!!";
-		System.out.println(gcm_token);
+	@Consumes({ MediaType.MULTIPART_FORM_DATA })
+	public Response sendPushNotification(@HeaderParam(value = "gcm-token") String token,
+			@FormDataParam("file") InputStream fileInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileMetaData) throws Exception {
+
+		System.out.println(token);
+
+		String os_name = System.getProperty("os.name");
+		String upload_path = "";
+		String fileurl = "";
+
+		if (os_name.startsWith("Windows"))
+			upload_path = System.getProperty("user.home") + "\\Run2Gether\\uploads\\";
+		else if (os_name.startsWith("Linux"))
+			upload_path = "/opt/tomcat/webapps/run2gether/WEB-INF/media/uploads/";
+		else {
+			log.error("Unrecognized server OS type");
+			throw new WebApplicationException("Unrecognized server OS");
+		}
+
+		File file = new File(upload_path);
+		if (!file.exists())
+			if (file.mkdirs())
+				log.info("Upload directory created");
+			else
+				log.warn("Cannot create upload directory");
+
+		try {
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			OutputStream out = new FileOutputStream(new File(upload_path + fileMetaData.getFileName()));
+			while ((read = fileInputStream.read(bytes)) != -1)
+				out.write(bytes, 0, read);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			throw new WebApplicationException("Error while uploading file. Please try again !!");
+		}
+
+		fileurl = "http://run2gether.uab.es:8080/run2gether/api/messaging/stream/"
+				+ fileMetaData.getFileName().split("\\.", -1)[0];
 		Sender sender = new Sender(SENDER_ID);
-		Message message = new Message.Builder().collapseKey("Miau").timeToLive(30).delayWhileIdle(true)
-				.addData("message", messageText).build();
+		Message message = new Message.Builder().priority(Message.Priority.HIGH).collapseKey("Miau").timeToLive(30)
+				.addData("message", fileurl).build();
 		List<String> devices = new ArrayList<>();
 		devices.add(token);
 		try {
 			MulticastResult result = sender.send(message, devices, 1);
+			System.out.println(message.toString());
 			System.out.println(result.toString());
 			if (result.getResults() != null) {
 				int canonicalRegId = result.getCanonicalIds();
@@ -72,7 +108,7 @@ public class MessagingService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return gcm_token;
+		return Response.ok("Data uploaded successfully !!").build();
 	}
 
 	// @RolesAllowed("USER")
