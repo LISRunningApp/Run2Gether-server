@@ -14,18 +14,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.run2gether.backend.data.ActivityRepository;
+import com.run2gether.backend.data.CheckpointRepository;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.Activity;
+import com.run2gether.backend.model.Checkpoint;
+import com.run2gether.backend.model.User;
 
-@Path("/activities")
+@Path("/checkpoint")
 @Component
-public class ActivitiesService {
+public class CheckpointService {
 
+	@Autowired
+	private CheckpointRepository checkpointRepository;
 	@Autowired
 	private ActivityRepository activityRepository;
-
 	@Autowired
-	private UsersRepository usersRepository;
+	private UsersRepository userstRepository;
 
 	@RolesAllowed("USER")
 	@GET
@@ -41,10 +45,12 @@ public class ActivitiesService {
 	// @RolesAllowed("USER")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/{username}")
-	public Response postUser(@PathParam("username") String username, Activity newActivity) {
-		activityRepository.post(newActivity, usersRepository.getEspecificUser(username).getUser().get(0));
-		// retronar el id de actividades
+	@Path("/{username}/{activity}")
+	public Response addNewCheckpoint(@PathParam("username") String username, @PathParam("activity") Integer idActivity,
+			Checkpoint newCheckpoint) {
+		User user = userstRepository.getEspecificUser(username).getUser().get(0);
+		Activity activity = activityRepository.get(idActivity, user).getActivities().get(0);
+		checkpointRepository.post(newCheckpoint, activity);
 		return Response.ok().build();
 	}
 

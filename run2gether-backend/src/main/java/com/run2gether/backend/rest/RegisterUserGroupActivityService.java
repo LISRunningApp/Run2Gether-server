@@ -13,19 +13,23 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.run2gether.backend.data.ActivityRepository;
+import com.run2gether.backend.data.GroupActivityRepository;
+import com.run2gether.backend.data.UserGroupActivityRepository;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.Activity;
+import com.run2gether.backend.model.Usergroupactivity;
 
-@Path("/activities")
+@Path("/registerusergroupactivity")
 @Component
-public class ActivitiesService {
+public class RegisterUserGroupActivityService {
 
 	@Autowired
-	private ActivityRepository activityRepository;
+	private UserGroupActivityRepository userGroupActivityRepository;
 
 	@Autowired
 	private UsersRepository usersRepository;
+	@Autowired
+	private GroupActivityRepository groupActivityRepository;
 
 	@RolesAllowed("USER")
 	@GET
@@ -41,9 +45,11 @@ public class ActivitiesService {
 	// @RolesAllowed("USER")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/{username}")
-	public Response postUser(@PathParam("username") String username, Activity newActivity) {
-		activityRepository.post(newActivity, usersRepository.getEspecificUser(username).getUser().get(0));
+	@Path("/{username}/{grupactivity}")
+	public Response AddNewGroupActivity(@PathParam("username") String username, Usergroupactivity newGroupActivity,
+			@PathParam("grupactivity") Integer groupActivity) {
+		userGroupActivityRepository.post(newGroupActivity, usersRepository.getEspecificUser(username).getUser().get(0),
+				groupActivityRepository.get(groupActivity).getGroupActivitiy().get(0));
 		// retronar el id de actividades
 		return Response.ok().build();
 	}

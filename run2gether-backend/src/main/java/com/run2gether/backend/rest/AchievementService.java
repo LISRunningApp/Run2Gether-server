@@ -13,19 +13,16 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.run2gether.backend.data.ActivityRepository;
-import com.run2gether.backend.data.UsersRepository;
+import com.run2gether.backend.data.AchievementRepository;
+import com.run2gether.backend.model.Achievement;
 import com.run2gether.backend.model.Activity;
 
-@Path("/activities")
+@Path("/achievement")
 @Component
-public class ActivitiesService {
+public class AchievementService {
 
 	@Autowired
-	private ActivityRepository activityRepository;
-
-	@Autowired
-	private UsersRepository usersRepository;
+	private AchievementRepository achievementRepository;
 
 	@RolesAllowed("USER")
 	@GET
@@ -41,10 +38,8 @@ public class ActivitiesService {
 	// @RolesAllowed("USER")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/{username}")
-	public Response postUser(@PathParam("username") String username, Activity newActivity) {
-		activityRepository.post(newActivity, usersRepository.getEspecificUser(username).getUser().get(0));
-		// retronar el id de actividades
+	public Response addNewAchievement(Achievement newAchievement) {
+		achievementRepository.post(newAchievement);
 		return Response.ok().build();
 	}
 

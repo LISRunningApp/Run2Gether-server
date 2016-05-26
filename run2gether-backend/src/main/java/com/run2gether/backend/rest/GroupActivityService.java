@@ -13,16 +13,17 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.run2gether.backend.data.ActivityRepository;
+import com.run2gether.backend.data.GroupActivityRepository;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.Activity;
+import com.run2gether.backend.model.Groupactivity;
 
-@Path("/activities")
+@Path("/groupactivity")
 @Component
-public class ActivitiesService {
+public class GroupActivityService {
 
 	@Autowired
-	private ActivityRepository activityRepository;
+	private GroupActivityRepository groupActivityRepository;
 
 	@Autowired
 	private UsersRepository usersRepository;
@@ -42,8 +43,8 @@ public class ActivitiesService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}")
-	public Response postUser(@PathParam("username") String username, Activity newActivity) {
-		activityRepository.post(newActivity, usersRepository.getEspecificUser(username).getUser().get(0));
+	public Response AddNewGroupActivity(@PathParam("username") String username, Groupactivity newGroupActivity) {
+		groupActivityRepository.post(newGroupActivity, usersRepository.getEspecificUser(username).getUser().get(0));
 		// retronar el id de actividades
 		return Response.ok().build();
 	}

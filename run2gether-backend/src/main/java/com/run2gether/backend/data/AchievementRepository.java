@@ -40,7 +40,7 @@ public class AchievementRepository {
 	}
 
 	@Transactional
-	public void postAchievement(Achievement newAchievement) {
+	public void post(Achievement newAchievement) {
 		newAchievement.setDateModified(new LocalDateTime().toDate());
 		em.persist(newAchievement);
 	}

@@ -58,7 +58,7 @@ public class Registry {
 							Float.parseFloat(userRegister.get("weight").toString()),
 							userRegister.get("sex").toString().replaceAll("\"", ""), new Date());
 
-					usersRepository.postUser(newUser);
+					usersRepository.post(newUser);
 					result = Response.ok().build();
 				}
 			} catch (

@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.run2gether.backend.model.Groupactivity;
 
 @JsonRootName(value = "groupActivitiy")
-public class GroupActivitiyWrapper {
+public class GroupActivityWrapper {
 
 	final Logger log = Logger.getLogger(UsersWrapper.class);
 	private List<Groupactivity> groupActivity;
 
-	public GroupActivitiyWrapper(List<Groupactivity> groupActivitiy) {
+	public GroupActivityWrapper(List<Groupactivity> groupActivitiy) {
 		groupActivity = groupActivitiy;
 	}
 

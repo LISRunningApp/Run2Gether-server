@@ -32,7 +32,7 @@ public class UsersRepository {
 	}
 
 	@Transactional
-	public void postUser(User newUser) {
+	public void post(User newUser) {
 		newUser.setCreationDate(new LocalDateTime().toDate());
 		newUser.setLastLogin(new LocalDateTime().toDate());
 		em.persist(newUser);
@@ -45,6 +45,6 @@ public class UsersRepository {
 		BooleanExpression wh = QUser.user.email.eq(idUser).or(QUser.user.username.eq(idUser));
 		UsersWrapper usersWrapper = new UsersWrapper(query.from(qu).where(wh).fetch());
 		return usersWrapper;
-
 	}
+
 }

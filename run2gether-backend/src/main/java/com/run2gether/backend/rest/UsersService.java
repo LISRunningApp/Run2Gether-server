@@ -36,7 +36,7 @@ public class UsersService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response postUser(User newUser) {
-		usersRepository.postUser(newUser);
+		usersRepository.post(newUser);
 		return Response.ok().build();
 	}
 }

@@ -1,0 +1,44 @@
+package com.run2gether.backend.data;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.apache.log4j.Logger;
+import org.joda.time.LocalDateTime;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.run2gether.backend.model.Groupactivity;
+import com.run2gether.backend.model.QGroupactivity;
+import com.run2gether.backend.model.User;
+import com.run2gether.backend.model.wrappers.GroupActivityWrapper;
+
+@Repository
+public class GroupActivityRepository {
+
+	@PersistenceContext
+	private EntityManager em;
+
+	final Logger log = Logger.getLogger(GroupActivityRepository.class);
+
+	@Transactional
+	public void post(Groupactivity newGroupActivitiy, User user) {
+		newGroupActivitiy.setUser(user);
+		newGroupActivitiy.setDateModified(new LocalDateTime().toDate());
+		em.persist(newGroupActivitiy);
+	}
+
+	@Transactional
+	public GroupActivityWrapper get(Integer groupActivity) {
+		JPQLQuery<Groupactivity> query = new JPAQuery<>(em);
+		QGroupactivity qga = QGroupactivity.groupactivity;
+		BooleanExpression wh = QGroupactivity.groupactivity.id.eq(groupActivity);
+		GroupActivityWrapper grupActivityWrapper = new GroupActivityWrapper(query.from(qga).where(wh).fetch());
+		return grupActivityWrapper;
+
+	}
+
+}
