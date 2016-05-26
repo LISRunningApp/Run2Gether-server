@@ -17,7 +17,7 @@ import com.run2gether.backend.model.Activity;
 import com.run2gether.backend.model.Checkpoint;
 import com.run2gether.backend.model.QCheckpoint;
 import com.run2gether.backend.model.QUser;
-import com.run2gether.backend.model.wrappers.ActivitiesWrapper;
+import com.run2gether.backend.model.wrappers.CheckpointWrapper;
 
 @Repository
 public class CheckpointRepository {
