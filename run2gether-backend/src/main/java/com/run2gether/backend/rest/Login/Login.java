@@ -47,7 +47,7 @@ public class Login {
 			if (loginParams.values().size() == 2) {
 				username = loginParams.getString("username").toString();
 				password = loginParams.getString("password").toString();
-				UsersWrapper wListUser = usersRepository.getEspecificUser(username);
+				UsersWrapper wListUser = usersRepository.get(username);
 				for (User i : wListUser.getUser())
 					if (i.getEmail().equalsIgnoreCase(username) || i.getUsername().equalsIgnoreCase(username))
 						if (i.getPassword().equalsIgnoreCase(password)) {
@@ -96,7 +96,7 @@ public class Login {
 			return Response.status(400).build();
 		}
 		if (idFacebook.equalsIgnoreCase(idQuery)) {
-			UsersWrapper wListUser = usersRepository.getEspecificUser(idQuery);
+			UsersWrapper wListUser = usersRepository.get(idQuery);
 			for (User i : wListUser.getUser())
 				if (i.getUsername().equalsIgnoreCase(idQuery))
 					result = Response.status(200).build();

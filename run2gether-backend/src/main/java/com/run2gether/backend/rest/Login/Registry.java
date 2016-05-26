@@ -30,9 +30,9 @@ public class Registry {
 				&& userRegister.containsKey("email"))
 			try {
 				UsersWrapper userSearch = usersRepository
-						.getEspecificUser(userRegister.get("username").toString().replaceAll("\"", ""));
+						.get(userRegister.get("username").toString().replaceAll("\"", ""));
 				UsersWrapper emailSearch = usersRepository
-						.getEspecificUser(userRegister.get("email").toString().replaceAll("\"", ""));
+						.get(userRegister.get("email").toString().replaceAll("\"", ""));
 				if (userSearch.getUser().isEmpty() && emailSearch.getUser().isEmpty()) {
 					// TODO la contraseña tiene que estar hasheada
 

@@ -39,7 +39,7 @@ public class UsersRepository {
 	}
 
 	@Transactional
-	public UsersWrapper getEspecificUser(String idUser) {
+	public UsersWrapper get(String idUser) {
 		JPQLQuery<User> query = new JPAQuery<>(em);
 		QUser qu = QUser.user;
 		BooleanExpression wh = QUser.user.email.eq(idUser).or(QUser.user.username.eq(idUser));

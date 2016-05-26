@@ -22,10 +22,10 @@ public class UserGroupActivityRepository {
 
 	@Transactional
 	public void post(Usergroupactivity newUserGroupActivity, User user, Groupactivity groupactivity) {
-		newUserGroupActivity.setUser(user);
-		newUserGroupActivity.setGroupactivity(groupactivity);
 		newUserGroupActivity.setDate(new LocalDateTime().toDate());
 		newUserGroupActivity.setDateModified(new LocalDateTime().toDate());
+		newUserGroupActivity.setUser(user);
+		newUserGroupActivity.setGroupactivity(groupactivity);
 		em.persist(newUserGroupActivity);
 	}
 }

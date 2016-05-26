@@ -48,7 +48,7 @@ public class CheckpointService {
 	@Path("/{username}/{activity}")
 	public Response addNewCheckpoint(@PathParam("username") String username, @PathParam("activity") Integer idActivity,
 			Checkpoint newCheckpoint) {
-		User user = userstRepository.getEspecificUser(username).getUser().get(0);
+		User user = userstRepository.get(username).getUser().get(0);
 		Activity activity = activityRepository.get(idActivity, user).getActivities().get(0);
 		checkpointRepository.post(newCheckpoint, activity);
 		return Response.ok().build();

@@ -28,7 +28,7 @@ public class AchievementRepository {
 	final Logger log = Logger.getLogger(AchievementRepository.class);
 
 	@Transactional
-	public AchievementWrapper setAchievement(Date date, String username) {
+	public AchievementWrapper set(Date date, String username) {
 		JPQLQuery<Achievement> query = new JPAQuery<>(em);
 		QAchievement qa = QAchievement.achievement;
 		QUser qu = QUser.user;
@@ -36,6 +36,15 @@ public class AchievementRepository {
 				.and(QUserachievementId.userachievementId.idUser.eq(QUser.user.id))
 				.and(QUser.user.username.eq(username)).and(QAchievement.achievement.dateModified.eq(date));
 		AchievementWrapper activityWrapper = new AchievementWrapper(query.from(qa, qu).where(wh).fetch());
+		return activityWrapper;
+	}
+
+	@Transactional
+	public AchievementWrapper get(Integer id) {
+		JPQLQuery<Achievement> query = new JPAQuery<>(em);
+		QAchievement qa = QAchievement.achievement;
+		BooleanExpression wh = QAchievement.achievement.id.eq(id);
+		AchievementWrapper activityWrapper = new AchievementWrapper(query.from(qa).where(wh).fetch());
 		return activityWrapper;
 	}
 

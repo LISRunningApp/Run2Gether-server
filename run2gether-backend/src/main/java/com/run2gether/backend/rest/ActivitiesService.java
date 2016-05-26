@@ -43,7 +43,7 @@ public class ActivitiesService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}")
 	public Response postUser(@PathParam("username") String username, Activity newActivity) {
-		activityRepository.post(newActivity, usersRepository.getEspecificUser(username).getUser().get(0));
+		activityRepository.post(newActivity, usersRepository.get(username).getUser().get(0));
 		// retronar el id de actividades
 		return Response.ok().build();
 	}

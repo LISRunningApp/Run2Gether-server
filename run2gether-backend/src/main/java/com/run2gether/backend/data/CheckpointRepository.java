@@ -41,8 +41,8 @@ public class CheckpointRepository {
 
 	@Transactional
 	public void post(Checkpoint newCheckpoint, Activity activity) {
-		newCheckpoint.setActivity(activity);
 		newCheckpoint.setDateModified(new LocalDateTime().toDate());
+		newCheckpoint.setActivity(activity);
 		em.persist(newCheckpoint);
 	}
 

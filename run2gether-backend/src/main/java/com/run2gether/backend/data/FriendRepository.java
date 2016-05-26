@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.run2gether.backend.model.Friend;
+import com.run2gether.backend.model.User;
 
 @Repository
 public class FriendRepository {
@@ -19,8 +20,10 @@ public class FriendRepository {
 	final Logger log = Logger.getLogger(FriendRepository.class);
 
 	@Transactional
-	public void post(Friend newFriend) {
+	public void post(Friend newFriend, User user, User friend) {
 		newFriend.setDateModified(new LocalDateTime().toDate());
+		newFriend.setUserByIdUser(user);
+		newFriend.setUserByIdFriend(friend);
 		em.persist(newFriend);
 	}
 }

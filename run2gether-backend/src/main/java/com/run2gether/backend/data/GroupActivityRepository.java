@@ -26,8 +26,8 @@ public class GroupActivityRepository {
 
 	@Transactional
 	public void post(Groupactivity newGroupActivitiy, User user) {
-		newGroupActivitiy.setUser(user);
 		newGroupActivitiy.setDateModified(new LocalDateTime().toDate());
+		newGroupActivitiy.setUser(user);
 		em.persist(newGroupActivitiy);
 	}
 

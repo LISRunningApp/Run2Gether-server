@@ -13,20 +13,20 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.run2gether.backend.data.GroupActivityRepository;
+import com.run2gether.backend.data.FriendRepository;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.Activity;
-import com.run2gether.backend.model.Groupactivity;
+import com.run2gether.backend.model.Friend;
+import com.run2gether.backend.model.User;
 
-@Path("/groupactivity")
+@Path("/friend")
 @Component
-public class GroupActivityService {
+public class FriendService {
 
 	@Autowired
-	private GroupActivityRepository groupActivityRepository;
-
+	private FriendRepository friendRepository;
 	@Autowired
-	private UsersRepository usersRepository;
+	private UsersRepository userstRepository;
 
 	@RolesAllowed("USER")
 	@GET
@@ -42,11 +42,14 @@ public class GroupActivityService {
 	// @RolesAllowed("USER")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/{username}")
-	public Response AddNewGroupActivity(@PathParam("username") String username, Groupactivity newGroupActivity) {
-		groupActivityRepository.post(newGroupActivity, usersRepository.get(username).getUser().get(0));
-		// retronar el id de actividades
+	@Path("/{username}/{newfriend}")
+	public Response addNewCheckpoint(@PathParam("username") String username,
+			@PathParam("newfriend") String usernamefriend) {
+		User user = userstRepository.get(username).getUser().get(0);
+		User friend = userstRepository.get(usernamefriend).getUser().get(0);
+		Friend newFriend = new Friend();
+		friendRepository.post(newFriend, user, friend);
+
 		return Response.ok().build();
 	}
-
 }
