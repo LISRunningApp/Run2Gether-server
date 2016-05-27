@@ -1,5 +1,9 @@
 package com.run2gether.backend.rest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -10,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +23,7 @@ import com.run2gether.backend.data.ActivityRepository;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.Activity;
 import com.run2gether.backend.model.User;
+import com.run2gether.backend.model.wrappers.ActivitiesWrapper;
 
 @Path("/activities")
 @Component
@@ -33,11 +39,18 @@ public class ActivitiesService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{date}")
-	public Activity getActivity(@PathParam("username") String username, @PathParam("date") String date) {
-		// SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-		// Date dateQuerry = formatter.parse(date);
+	public Response getForDate(@PathParam("username") String username, @PathParam("date") String date) {
+		ActivitiesWrapper result;
+		try {
+			User user = usersRepository.get(username).getUser().get(0);
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+			Date dateQuerry = formatter.parse(date);
+			result = activityRepository.get(user, dateQuerry);
+		} catch (ParseException e) {
+			return Response.status(Status.NOT_IMPLEMENTED).build();
+		}
 
-		return null;
+		return Response.ok(result).build();
 	}
 
 	// @RolesAllowed("USER")

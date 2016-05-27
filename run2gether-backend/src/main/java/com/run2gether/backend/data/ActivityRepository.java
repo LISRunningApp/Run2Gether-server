@@ -1,5 +1,7 @@
 package com.run2gether.backend.data;
 
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -48,6 +50,15 @@ public class ActivityRepository {
 		JPQLQuery<Activity> query = new JPAQuery<>(em);
 		QActivity qa = QActivity.activity;
 		BooleanExpression wh = QActivity.activity.id.eq(idActivity).and(QActivity.activity.user.eq(user));
+		ActivitiesWrapper activityWrapper = new ActivitiesWrapper(query.from(qa).where(wh).fetch());
+		return activityWrapper;
+	}
+
+	@Transactional
+	public ActivitiesWrapper get(User user, Date date) {
+		JPQLQuery<Activity> query = new JPAQuery<>(em);
+		QActivity qa = QActivity.activity;
+		BooleanExpression wh = QActivity.activity.user.eq(user).and(QActivity.activity.dateModified.gt(date));
 		ActivitiesWrapper activityWrapper = new ActivitiesWrapper(query.from(qa).where(wh).fetch());
 		return activityWrapper;
 	}
