@@ -26,5 +26,6 @@ public class UserAchievementRepository {
 		newUserAchievement.setAchievement(achievement);
 		newUserAchievement.setUser(user);
 		em.persist(newUserAchievement);
+		em.flush();
 	}
 }

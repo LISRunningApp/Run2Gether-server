@@ -311,4 +311,23 @@ public class User implements java.io.Serializable {
 		this.usergroupactivities = usergroupactivities;
 	}
 
+	public void updateUser(User modyAtt) {
+		name = modyAtt.name == null ? name : modyAtt.name;
+		surname = modyAtt.surname == null ? surname : modyAtt.surname;
+		password = modyAtt.password == null ? password : modyAtt.password;
+		lastLogin = modyAtt.lastLogin == null ? lastLogin : modyAtt.lastLogin;
+		status = modyAtt.status == null ? status : modyAtt.status;
+		age = modyAtt.age == null ? age : modyAtt.age;
+		size = modyAtt.size == null ? size : modyAtt.size;
+		weight = modyAtt.weight == null ? weight : modyAtt.weight;
+		sex = modyAtt.sex == null ? sex : modyAtt.sex;
+
+		// creationDate => No se peude modificar es una fecha de creacion (no
+		// tiene sentido)
+		// loginType => No se puede cambiar el tipo de Login, por son
+		// incompatibles entre ellos {Facebook/Base de datos}
+		// email => como que es parte del login hay que revisar si se peude
+		// modificar o no (Pregutnar)
+	}
+
 }

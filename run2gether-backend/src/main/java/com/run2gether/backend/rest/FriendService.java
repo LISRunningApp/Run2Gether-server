@@ -4,6 +4,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -48,8 +49,24 @@ public class FriendService {
 		User user = userstRepository.get(username).getUser().get(0);
 		User friend = userstRepository.get(usernamefriend).getUser().get(0);
 		Friend newFriend = new Friend();
+		newFriend.setStatus("pending");
 		friendRepository.post(newFriend, user, friend);
+		return Response.ok().build();
+	}
 
+	// @RolesAllowed("USER")
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/{username}/{newfriend}")
+	public Response modifyUser(@PathParam("username") String username, @PathParam("newfriend") String usernamefriend,
+			Friend modifyFriend) {
+
+		User user = userstRepository.get(username).getUser().get(0);
+		User myFriend = userstRepository.get(usernamefriend).getUser().get(0);
+
+		Friend userFrined = friendRepository.get(user, myFriend);
+		userFrined.update(modifyFriend);
+		friendRepository.put(userFrined);
 		return Response.ok().build();
 	}
 }

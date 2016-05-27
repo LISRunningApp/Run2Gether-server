@@ -44,6 +44,7 @@ public class CheckpointRepository {
 		newCheckpoint.setDateModified(new LocalDateTime().toDate());
 		newCheckpoint.setActivity(activity);
 		em.persist(newCheckpoint);
+		em.flush();
 	}
 
 }

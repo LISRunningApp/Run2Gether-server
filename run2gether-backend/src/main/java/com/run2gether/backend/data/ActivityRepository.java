@@ -35,10 +35,12 @@ public class ActivityRepository {
 	 * activityWrapper; }
 	 */
 	@Transactional
-	public void post(Activity newActivities, User user) {
+	public Integer post(Activity newActivities, User user) {
 		newActivities.setDateModified(new LocalDateTime().toDate());
 		newActivities.setUser(user);
 		em.persist(newActivities);
+		em.flush();
+		return newActivities.getId();
 	}
 
 	@Transactional
@@ -48,5 +50,12 @@ public class ActivityRepository {
 		BooleanExpression wh = QActivity.activity.id.eq(idActivity).and(QActivity.activity.user.eq(user));
 		ActivitiesWrapper activityWrapper = new ActivitiesWrapper(query.from(qa).where(wh).fetch());
 		return activityWrapper;
+	}
+
+	@Transactional
+	public void put(Activity activity) {
+		activity.setDateModified(new LocalDateTime().toDate());
+		em.merge(activity);
+		em.flush();
 	}
 }

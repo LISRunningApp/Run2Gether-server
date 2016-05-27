@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.run2gether.backend.model.Friend;
+import com.run2gether.backend.model.FriendId;
 import com.run2gether.backend.model.User;
 
 @Repository
@@ -25,5 +26,21 @@ public class FriendRepository {
 		newFriend.setUserByIdUser(user);
 		newFriend.setUserByIdFriend(friend);
 		em.persist(newFriend);
+		em.flush();
+	}
+
+	@Transactional
+	public Friend get(User user, User friend) {
+		FriendId pk = new FriendId();
+		pk.setIdUser(user.getId());
+		pk.setIdFriend(friend.getId());
+		return em.find(Friend.class, pk);
+
+	}
+
+	public void put(Friend friend) {
+		friend.setDateModified(new LocalDateTime().toDate());
+		em.merge(friend);
+		em.flush();
 	}
 }

@@ -58,7 +58,6 @@ public class Activity implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return id;
@@ -140,6 +139,19 @@ public class Activity implements java.io.Serializable {
 
 	public void setCheckpoints(Set<Checkpoint> checkpoints) {
 		this.checkpoints = checkpoints;
+	}
+
+	public void updateActivity(Activity modyAtt) {
+		// user = modyAtt.user == null ? user : modyAtt.user;
+		route = modyAtt.route == null ? route : modyAtt.route;
+		timeKm = modyAtt.timeKm == null ? timeKm : modyAtt.timeKm;
+		m = modyAtt.m == null ? m : modyAtt.m;
+		duration = modyAtt.duration == null ? duration : modyAtt.duration;
+
+		/**
+		 * idGroupactivities: Una vez asignado un Grupo de Actividad a una
+		 * activdad no se peude modificar
+		 */
 	}
 
 }

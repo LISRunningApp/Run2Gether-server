@@ -97,4 +97,8 @@ public class Friend implements java.io.Serializable {
 		this.dateModified = dateModified;
 	}
 
+	public void update(Friend modyAtt) {
+		status = modyAtt.status == null ? status : modyAtt.status;
+	}
+
 }

@@ -37,7 +37,6 @@ public class UserAchievementService {
 		User user = usersRepository.get(username).getUser().get(0);
 		Achievement newAchievement = achievementRepository.get(idAchievement).getAchievement().get(0);
 		usersAchievementRepository.post(newMedal, user, newAchievement);
-
 		return Response.ok().build();
 	}
 }

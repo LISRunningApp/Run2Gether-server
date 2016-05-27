@@ -49,8 +49,10 @@ public class AchievementRepository {
 	}
 
 	@Transactional
-	public void post(Achievement newAchievement) {
+	public Integer post(Achievement newAchievement) {
 		newAchievement.setDateModified(new LocalDateTime().toDate());
 		em.persist(newAchievement);
+		em.flush();
+		return newAchievement.getId();
 	}
 }

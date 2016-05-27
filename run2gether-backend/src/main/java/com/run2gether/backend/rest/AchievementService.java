@@ -39,8 +39,7 @@ public class AchievementService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNewAchievement(Achievement newAchievement) {
-		achievementRepository.post(newAchievement);
-		return Response.ok().build();
+		return Response.ok(achievementRepository.post(newAchievement)).build();
 	}
 
 }

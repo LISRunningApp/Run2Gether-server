@@ -4,6 +4,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.run2gether.backend.data.ActivityRepository;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.Activity;
+import com.run2gether.backend.model.User;
 
 @Path("/activities")
 @Component
@@ -43,8 +45,20 @@ public class ActivitiesService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}")
 	public Response postUser(@PathParam("username") String username, Activity newActivity) {
-		activityRepository.post(newActivity, usersRepository.get(username).getUser().get(0));
-		// retronar el id de actividades
+		Integer activityId = activityRepository.post(newActivity, usersRepository.get(username).getUser().get(0));
+		return Response.ok(activityId).build();
+	}
+
+	// @RolesAllowed("USER")
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/{username}/{activity}")
+	public Response modifyActivity(@PathParam("username") String username, @PathParam("activity") Integer idActivity,
+			Activity modifyActivity) {
+		User user = usersRepository.get(username).getUser().get(0);
+		Activity activity = activityRepository.get(idActivity, user).getActivities().get(0);
+		activity.updateActivity(modifyActivity);
+		activityRepository.put(activity);
 		return Response.ok().build();
 	}
 

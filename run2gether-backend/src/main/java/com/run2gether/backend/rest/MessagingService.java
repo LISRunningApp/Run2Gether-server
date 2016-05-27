@@ -173,6 +173,7 @@ public class MessagingService {
 		final File asset = new File(stream_path + audioName + ".mp3");
 
 		StreamingOutput streamer = output -> {
+			@SuppressWarnings("resource")
 			final FileChannel inputChannel = new FileInputStream(asset).getChannel();
 			final WritableByteChannel outputChannel = Channels.newChannel(output);
 			try {

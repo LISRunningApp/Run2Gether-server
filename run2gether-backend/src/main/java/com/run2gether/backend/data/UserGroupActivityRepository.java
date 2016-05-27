@@ -27,5 +27,6 @@ public class UserGroupActivityRepository {
 		newUserGroupActivity.setUser(user);
 		newUserGroupActivity.setGroupactivity(groupactivity);
 		em.persist(newUserGroupActivity);
+		em.flush();
 	}
 }

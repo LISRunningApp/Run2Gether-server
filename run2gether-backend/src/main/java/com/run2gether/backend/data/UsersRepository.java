@@ -32,10 +32,12 @@ public class UsersRepository {
 	}
 
 	@Transactional
-	public void post(User newUser) {
+	public Integer post(User newUser) {
 		newUser.setCreationDate(new LocalDateTime().toDate());
 		newUser.setLastLogin(new LocalDateTime().toDate());
 		em.persist(newUser);
+		em.flush();
+		return newUser.getId();
 	}
 
 	@Transactional
@@ -47,4 +49,10 @@ public class UsersRepository {
 		return usersWrapper;
 	}
 
+	@Transactional
+	public void put(User user) {
+		user.setDateModified(new LocalDateTime().toDate());
+		em.merge(user);
+		em.flush();
+	}
 }
