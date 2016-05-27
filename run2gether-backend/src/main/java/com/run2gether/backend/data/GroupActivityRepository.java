@@ -43,4 +43,11 @@ public class GroupActivityRepository {
 
 	}
 
+	@Transactional
+	public void put(Groupactivity groupActivity) {
+		groupActivity.setDateModified(new LocalDateTime().toDate());
+		em.merge(groupActivity);
+		em.flush();
+	}
+
 }

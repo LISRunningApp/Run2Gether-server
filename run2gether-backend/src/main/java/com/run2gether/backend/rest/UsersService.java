@@ -37,7 +37,7 @@ public class UsersService {
 	@RolesAllowed("USER")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response postUser(User newUser) {
+	public Response addNewUser(User newUser) {
 		return Response.ok(usersRepository.post(newUser).toString()).build();
 	}
 
@@ -47,7 +47,7 @@ public class UsersService {
 	@Path("/{username}")
 	public Response modifyUser(@PathParam("username") String username, User modifyUser) {
 		User user = usersRepository.get(username).getUser().get(0);
-		user.updateUser(modifyUser);
+		user.update(modifyUser);
 		usersRepository.put(user);
 		return Response.ok().build();
 	}

@@ -4,6 +4,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -43,9 +44,21 @@ public class GroupActivityService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}")
-	public Response AddNewGroupActivity(@PathParam("username") String username, Groupactivity newGroupActivity) {
-		groupActivityRepository.post(newGroupActivity, usersRepository.get(username).getUser().get(0));
-		// retronar el id de actividades
+	public Response addNewGroupActivity(@PathParam("username") String username, Groupactivity newGroupActivity) {
+		Integer idGroupActivity = groupActivityRepository.post(newGroupActivity,
+				usersRepository.get(username).getUser().get(0));
+		return Response.ok(idGroupActivity).build();
+	}
+
+	// @RolesAllowed("USER")
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/{idgroupactivity}")
+	public Response modifyGroupActivity(@PathParam("idgroupactivity") Integer idgroupactivity,
+			Groupactivity modifyGroupactivity) {
+		Groupactivity groupActivity = groupActivityRepository.get(idgroupactivity).getGroupActivitiy().get(0);
+		groupActivity.update(modifyGroupactivity);
+		groupActivityRepository.put(groupActivity);
 		return Response.ok().build();
 	}
 

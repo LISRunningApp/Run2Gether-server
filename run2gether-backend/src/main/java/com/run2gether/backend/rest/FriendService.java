@@ -58,8 +58,8 @@ public class FriendService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{newfriend}")
-	public Response modifyUser(@PathParam("username") String username, @PathParam("newfriend") String usernamefriend,
-			Friend modifyFriend) {
+	public Response modifyCheckpoint(@PathParam("username") String username,
+			@PathParam("newfriend") String usernamefriend, Friend modifyFriend) {
 
 		User user = userstRepository.get(username).getUser().get(0);
 		User myFriend = userstRepository.get(usernamefriend).getUser().get(0);

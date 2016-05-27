@@ -311,7 +311,7 @@ public class User implements java.io.Serializable {
 		this.usergroupactivities = usergroupactivities;
 	}
 
-	public void updateUser(User modyAtt) {
+	public void update(User modyAtt) {
 		name = modyAtt.name == null ? name : modyAtt.name;
 		surname = modyAtt.surname == null ? surname : modyAtt.surname;
 		password = modyAtt.password == null ? password : modyAtt.password;

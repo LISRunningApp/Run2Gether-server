@@ -141,7 +141,7 @@ public class Activity implements java.io.Serializable {
 		this.checkpoints = checkpoints;
 	}
 
-	public void updateActivity(Activity modyAtt) {
+	public void update(Activity modyAtt) {
 		// user = modyAtt.user == null ? user : modyAtt.user;
 		route = modyAtt.route == null ? route : modyAtt.route;
 		timeKm = modyAtt.timeKm == null ? timeKm : modyAtt.timeKm;

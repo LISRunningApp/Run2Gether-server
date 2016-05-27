@@ -112,4 +112,10 @@ public class Groupactivity implements java.io.Serializable {
 		this.usergroupactivities = usergroupactivities;
 	}
 
+	public void update(Groupactivity modyAtt) {
+		startDate = modyAtt.startDate == null ? startDate : modyAtt.startDate;
+		resume = modyAtt.resume == null ? resume : modyAtt.resume;
+
+	}
+
 }

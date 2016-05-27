@@ -44,7 +44,7 @@ public class ActivitiesService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}")
-	public Response postUser(@PathParam("username") String username, Activity newActivity) {
+	public Response addNewActivity(@PathParam("username") String username, Activity newActivity) {
 		Integer activityId = activityRepository.post(newActivity, usersRepository.get(username).getUser().get(0));
 		return Response.ok(activityId).build();
 	}
@@ -57,7 +57,7 @@ public class ActivitiesService {
 			Activity modifyActivity) {
 		User user = usersRepository.get(username).getUser().get(0);
 		Activity activity = activityRepository.get(idActivity, user).getActivities().get(0);
-		activity.updateActivity(modifyActivity);
+		activity.update(modifyActivity);
 		activityRepository.put(activity);
 		return Response.ok().build();
 	}

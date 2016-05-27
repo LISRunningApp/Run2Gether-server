@@ -46,7 +46,7 @@ public class RegisterUserGroupActivityService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{grupactivity}")
-	public Response AddNewGroupActivity(@PathParam("username") String username, Usergroupactivity newGroupActivity,
+	public Response addNewGroupActivity(@PathParam("username") String username, Usergroupactivity newGroupActivity,
 			@PathParam("grupactivity") Integer groupActivity) {
 		userGroupActivityRepository.post(newGroupActivity, usersRepository.get(username).getUser().get(0),
 				groupActivityRepository.get(groupActivity).getGroupActivitiy().get(0));
