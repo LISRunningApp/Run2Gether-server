@@ -46,6 +46,15 @@ public class ActivityRepository {
 	}
 
 	@Transactional
+	public ActivitiesWrapper getActivityForGroupActiviry(Integer idGroupActivity) {
+		JPQLQuery<Activity> query = new JPAQuery<>(em);
+		QActivity qa = QActivity.activity;
+		BooleanExpression wh = QActivity.activity.idGroupactivities.eq(idGroupActivity);
+		ActivitiesWrapper activityWrapper = new ActivitiesWrapper(query.from(qa).where(wh).fetch());
+		return activityWrapper;
+	}
+
+	@Transactional
 	public ActivitiesWrapper get(Integer idActivity, User user) {
 		JPQLQuery<Activity> query = new JPAQuery<>(em);
 		QActivity qa = QActivity.activity;

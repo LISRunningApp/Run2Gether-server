@@ -67,7 +67,7 @@ public class Activity implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_user", nullable = false)
 	public User getUser() {
 		return user;
@@ -132,7 +132,7 @@ public class Activity implements java.io.Serializable {
 		this.dateModified = dateModified;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "activity")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "activity")
 	public Set<Checkpoint> getCheckpoints() {
 		return checkpoints;
 	}

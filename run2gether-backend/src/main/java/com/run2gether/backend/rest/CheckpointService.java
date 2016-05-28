@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,10 @@ import com.run2gether.backend.data.ActivityRepository;
 import com.run2gether.backend.data.CheckpointRepository;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.Activity;
+import com.run2gether.backend.model.CheckPointRequest;
 import com.run2gether.backend.model.Checkpoint;
 import com.run2gether.backend.model.User;
+import com.run2gether.backend.model.wrappers.ActivitiesWrapper;
 
 @Path("/checkpoint")
 @Component
@@ -40,6 +43,43 @@ public class CheckpointService {
 		// Date dateQuerry = formatter.parse(date);
 
 		return null;
+	}
+
+	// @RolesAllowed("USER")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{grupactivityid}/{username}/{meters}")
+	public Response getActivity(@PathParam("username") String username,
+			@PathParam("grupactivityid") Integer idGroupActivity, @PathParam("meters") Integer meters) {
+
+		User user = userstRepository.get(username).getUser().get(0);
+		ActivitiesWrapper activityList = activityRepository.getActivityForGroupActiviry(idGroupActivity);
+		CheckPointRequest upCheckpoint = new CheckPointRequest();
+		CheckPointRequest downCheckpoint = new CheckPointRequest();
+		for (Activity activity : activityList.getActivities())
+			if (!activity.getUser().equals(user))
+				for (Checkpoint e : activity.getCheckpoints())
+					if (e.getId().getMeter() > meters && (upCheckpoint.getMeters() > e.getId().getMeter()
+							|| !Double.isNaN(upCheckpoint.getMeters()))) {
+						upCheckpoint.setMeters(e.getId().getMeter());
+						upCheckpoint.setUser(activity.getUser().getUsername());
+						upCheckpoint.setTimer(e.getTime());
+
+					} else if (e.getId().getMeter() <= meters
+							&& (downCheckpoint.getMeters() > e.getId().getMeter()
+									|| !Double.isNaN(downCheckpoint.getMeters()))
+							&& upCheckpoint.getUser() != activity.getUser().getUsername()) {
+						downCheckpoint.setMeters(e.getId().getMeter());
+						downCheckpoint.setUser(activity.getUser().getUsername());
+						downCheckpoint.setTimer(e.getTime());
+					}
+
+		JSONObject json = new JSONObject();
+		json.put("delante", upCheckpoint);
+		json.put("detras", downCheckpoint);
+		Response result = Response.ok(json).build();
+
+		return result;
 	}
 
 	// @RolesAllowed("USER")

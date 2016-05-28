@@ -330,4 +330,12 @@ public class User implements java.io.Serializable {
 		// modificar o no (Pregutnar)
 	}
 
+	public boolean equals(User usr) {
+		boolean isEqual = false;
+		if (id == usr.id)
+			isEqual = true;
+		return isEqual;
+
+	}
+
 }
