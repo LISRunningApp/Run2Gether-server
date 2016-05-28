@@ -59,6 +59,7 @@ public class Login {
 							json.put("token", authorization);
 							json.put("id", i.getId());
 							json.put("name", i.getName());
+							json.put("surname", i.getSurname());
 							json.put("sex", i.getSex());
 							json.put("username", i.getUsername());
 							result = Response.ok(json.toJSONString()).build();
