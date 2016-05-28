@@ -46,12 +46,18 @@ public class FriendService {
 	@Path("/{username}/{newfriend}")
 	public Response addNewCheckpoint(@PathParam("username") String username,
 			@PathParam("newfriend") String usernamefriend) {
-		User user = userstRepository.get(username).getUser().get(0);
-		User friend = userstRepository.get(usernamefriend).getUser().get(0);
-		Friend newFriend = new Friend();
-		newFriend.setStatus("pending");
-		friendRepository.post(newFriend, user, friend);
-		return Response.ok().build();
+		Response result = Response.status(400).build();
+		try {
+			User user = userstRepository.get(username).getUser().get(0);
+			User friend = userstRepository.get(usernamefriend).getUser().get(0);
+			Friend newFriend = new Friend();
+			newFriend.setStatus("pending");
+			friendRepository.post(newFriend, user, friend);
+			result = Response.ok().build();
+		} catch (Exception e) {
+			result = Response.status(404).build();
+		}
+		return result;
 	}
 
 	// @RolesAllowed("USER")
@@ -60,13 +66,19 @@ public class FriendService {
 	@Path("/{username}/{newfriend}")
 	public Response modifyCheckpoint(@PathParam("username") String username,
 			@PathParam("newfriend") String usernamefriend, Friend modifyFriend) {
-
-		User user = userstRepository.get(username).getUser().get(0);
-		User myFriend = userstRepository.get(usernamefriend).getUser().get(0);
-
-		Friend userFrined = friendRepository.get(user, myFriend);
-		userFrined.update(modifyFriend);
-		friendRepository.put(userFrined);
-		return Response.ok().build();
+		Response result = Response.status(400).build();
+		User user;
+		User myFriend;
+		try {
+			user = userstRepository.get(username).getUser().get(0);
+			myFriend = userstRepository.get(usernamefriend).getUser().get(0);
+			Friend userFrined = friendRepository.get(user, myFriend);
+			userFrined.update(modifyFriend);
+			friendRepository.put(userFrined);
+			result = Response.ok().build();
+		} catch (Exception e) {
+			result = Response.status(404).build();
+		}
+		return result;
 	}
 }

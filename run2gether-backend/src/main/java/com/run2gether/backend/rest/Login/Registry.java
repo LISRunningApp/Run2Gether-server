@@ -48,12 +48,17 @@ public class Registry {
 						} else
 							return Response.status(Status.BAD_REQUEST).build();
 					}
-
+					Integer age;
+					String a = userRegister.get("age").toString().replaceAll("\"", "");
+					if (a.equals("NaN"))
+						age = 0;
+					else
+						age = Integer.parseInt(userRegister.get("age").toString());
 					newUser = new User(userRegister.get("name").toString().replaceAll("\"", ""),
 							userRegister.get("surname").toString().replaceAll("\"", ""),
 							userRegister.get("email").toString().replaceAll("\"", ""),
 							userRegister.get("username").toString().replaceAll("\"", ""), password, new Date(),
-							new Date(), "disconnected", logintype, Integer.parseInt(userRegister.get("age").toString()),
+							new Date(), "disconnected", logintype, age,
 							Integer.parseInt(userRegister.get("size").toString()),
 							Float.parseFloat(userRegister.get("weight").toString()),
 							userRegister.get("sex").toString().replaceAll("\"", ""), new Date());

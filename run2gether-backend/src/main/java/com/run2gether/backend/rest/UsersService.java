@@ -27,7 +27,7 @@ public class UsersService {
 	@Autowired
 	private UsersRepository usersRepository;
 
-	@RolesAllowed("USER")
+	// @RolesAllowed("USER")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
@@ -46,10 +46,17 @@ public class UsersService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}")
 	public Response modifyUser(@PathParam("username") String username, User modifyUser) {
-		User user = usersRepository.get(username).getUser().get(0);
-		user.update(modifyUser);
-		usersRepository.put(user);
-		return Response.ok().build();
+		Response result = Response.status(400).build();
+		User user;
+		try {
+			user = usersRepository.get(username).getUser().get(0);
+			user.update(modifyUser);
+			usersRepository.put(user);
+			result = Response.ok().build();
+		} catch (Exception e) {
+			result = Response.status(404).build();
+		}
+		return result;
 	}
 
 }
