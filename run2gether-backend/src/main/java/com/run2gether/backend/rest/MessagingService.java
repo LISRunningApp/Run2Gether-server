@@ -2,16 +2,13 @@ package com.run2gether.backend.rest;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.StringTokenizer;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -26,89 +23,76 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.internal.util.Base64;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.google.android.gcm.server.Message;
-import com.google.android.gcm.server.MulticastResult;
-import com.google.android.gcm.server.Sender;
+import com.google.common.base.Preconditions;
+import com.run2gether.backend.controller.MessagingController;
 
 @Path("/messaging")
-@Component
+@Service
 public class MessagingService {
 
 	private Logger log = Logger.getLogger(MessagingService.class);
+	@Autowired
+	private MessagingController messagingController;
+	private static final String AUTHENTICATION_SCHEME = "Basic";
 
-	private static final String SENDER_ID = "AIzaSyDHZlbpoZLwSsAmk2xYkui9nL6yW9qOnls";
+	@RolesAllowed("USER")
+	@Path("/register/channel/{groupActivityId}")
+	@POST
+	@Produces({ MediaType.TEXT_PLAIN })
+	public Response registerNewGcmTokenToMulticastChannel(@HeaderParam(value = "gcm-token") String token,
+			@HeaderParam(value = "Authorization") String authHeader,
+			@PathParam(value = "groupActivityId") int groupActivityId) {
+
+		final String encodedUserPassword = authHeader.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+		// Decode username and password
+		String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
+
+		// Split username and password tokens
+		final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+		String username = tokenizer.nextToken();
+
+		messagingController.registerUserToChannel(groupActivityId, username, token);
+
+		return Response.ok("User registered").build();
+	}
+
+	@Path("/channel/{channel}")
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getMulticastChannel(@PathParam(value = "channel") int channel) {
+		return Response.ok(messagingController.getChannelContacts(channel)).build();
+	}
 
 	// @RolesAllowed("USER")
-	@Path("/send")
+	@Path("/send/{channel}")
 	@POST
 	@Consumes({ MediaType.MULTIPART_FORM_DATA })
-	public Response sendPushNotification(@HeaderParam(value = "gcm-token") String token,
-			@FormDataParam("file") InputStream fileInputStream,
+	public Response sendPushNotification(@HeaderParam(value = "Authorization") String authHeader,
+			@PathParam(value = "channel") int channel, @FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileMetaData) throws Exception {
 
-		System.out.println(token);
+		messagingController.saveAudioFile(fileInputStream, fileMetaData);
 
-		String os_name = System.getProperty("os.name");
-		String upload_path = "";
-		String fileurl = "";
-
-		if (os_name.startsWith("Windows"))
-			upload_path = System.getProperty("user.home") + "\\Run2Gether\\uploads\\";
-		else if (os_name.startsWith("Linux"))
-			upload_path = "/opt/tomcat/webapps/run2gether/WEB-INF/media/uploads/";
-		else {
-			log.error("Unrecognized server OS type");
-			throw new WebApplicationException("Unrecognized server OS");
-		}
-
-		File file = new File(upload_path);
-		if (!file.exists())
-			if (file.mkdirs())
-				log.info("Upload directory created");
-			else
-				log.warn("Cannot create upload directory");
-
-		try {
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			OutputStream out = new FileOutputStream(new File(upload_path + fileMetaData.getFileName()));
-			while ((read = fileInputStream.read(bytes)) != -1)
-				out.write(bytes, 0, read);
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			throw new WebApplicationException("Error while uploading file. Please try again !!");
-		}
-
-		fileurl = "http://run2gether.uab.es:8080/run2gether/api/messaging/stream/"
+		String fileurl = "http://run2gether.uab.es:8080/run2gether/api/messaging/stream/"
 				+ fileMetaData.getFileName().split("\\.", -1)[0];
-		Sender sender = new Sender(SENDER_ID);
-		Message message = new Message.Builder().priority(Message.Priority.HIGH).collapseKey("Miau").timeToLive(30)
-				.addData("message", fileurl).build();
-		List<String> devices = new ArrayList<>();
-		devices.add(token);
-		try {
-			MulticastResult result = sender.send(message, devices, 1);
-			System.out.println(message.toString());
-			System.out.println(result.toString());
-			if (result.getResults() != null) {
-				int canonicalRegId = result.getCanonicalIds();
-				if (canonicalRegId != 0)
-					System.out.println("GUD INOF");
-			} else {
-				int error = result.getFailure();
-				System.out.println("Broadcast failure: " + error);
-			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Response.ok("Data uploaded successfully !!").build();
+		final String encodedUserPassword = authHeader.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+		// Decode username and password
+		String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
+
+		// Split username and password tokens
+		final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+		String username = tokenizer.nextToken();
+
+		messagingController.sendGcmMessage(channel, username, fileurl);
+
+		return Response.ok("Audio sent").build();
 	}
 
 	// @RolesAllowed("USER")
@@ -117,38 +101,10 @@ public class MessagingService {
 	@Consumes({ MediaType.MULTIPART_FORM_DATA })
 	public Response uploadAudioFile(@FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileMetaData) throws Exception {
-		String os_name = System.getProperty("os.name");
-		String upload_path = "";
-		log.info(os_name);
 
-		if (os_name.startsWith("Windows"))
-			upload_path = System.getProperty("user.home") + "\\Run2Gether\\uploads\\";
-		else if (os_name.startsWith("Linux"))
-			upload_path = "/opt/tomcat/webapps/run2gether/WEB-INF/media/uploads/";
-		else {
-			log.error("Unrecognized server OS type");
-			throw new WebApplicationException("Unrecognized server OS");
-		}
+		Preconditions.checkNotNull(fileInputStream);
+		messagingController.saveAudioFile(fileInputStream, fileMetaData);
 
-		File file = new File(upload_path);
-		if (!file.exists())
-			if (file.mkdirs())
-				log.info("Upload directory created");
-			else
-				log.warn("Cannot create upload directory");
-
-		try {
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			OutputStream out = new FileOutputStream(new File(upload_path + fileMetaData.getFileName()));
-			while ((read = fileInputStream.read(bytes)) != -1)
-				out.write(bytes, 0, read);
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			throw new WebApplicationException("Error while uploading file. Please try again !!");
-		}
 		return Response.ok("Data uploaded successfully !!").build();
 	}
 
@@ -173,15 +129,9 @@ public class MessagingService {
 		final File asset = new File(stream_path + audioName + ".mp3");
 
 		StreamingOutput streamer = output -> {
-			@SuppressWarnings("resource")
-			final FileChannel inputChannel = new FileInputStream(asset).getChannel();
-			final WritableByteChannel outputChannel = Channels.newChannel(output);
-			try {
+			try (FileChannel inputChannel = new FileInputStream(asset).getChannel();
+					WritableByteChannel outputChannel = Channels.newChannel(output);) {
 				inputChannel.transferTo(0, inputChannel.size(), outputChannel);
-			} finally {
-				// closing the channels
-				inputChannel.close();
-				outputChannel.close();
 			}
 		};
 

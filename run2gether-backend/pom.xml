@@ -313,6 +313,15 @@
 	    	<artifactId>mimepull</artifactId>
 	    	<version>1.9.6</version>
 	    </dependency>
+	    <dependency>
+	    	<groupId>
+	    		org.glassfish.jersey.test-framework.providers
+	    	</groupId>
+	    	<artifactId>
+	    		jersey-test-framework-provider-simple
+	    	</artifactId>
+	    	<version>${jersey-version}</version>
+	    </dependency>
 	</dependencies>
 	
 	<build>

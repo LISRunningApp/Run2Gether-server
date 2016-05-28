@@ -50,6 +50,15 @@ public class UsersRepository {
 	}
 
 	@Transactional
+	public User getUserByUniquekey(String usernameormail) {
+		JPQLQuery<User> query = new JPAQuery<>(em);
+		QUser qu = QUser.user;
+		BooleanExpression wh = QUser.user.email.eq(usernameormail).or(QUser.user.username.eq(usernameormail));
+		User user = query.from(qu).where(wh).fetch().get(0);
+		return user;
+	}
+
+	@Transactional
 	public void put(User user) {
 		user.setDateModified(new LocalDateTime().toDate());
 		em.merge(user);
