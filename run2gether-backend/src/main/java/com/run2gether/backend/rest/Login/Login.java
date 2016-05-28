@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,8 +46,8 @@ public class Login {
 		Response result = Response.status(417).build();
 		try {
 			if (loginParams.values().size() == 2) {
-				username = loginParams.getString("username").toString();
-				password = loginParams.getString("password").toString();
+				username = loginParams.getString("User").toString();
+				password = loginParams.getString("Psw").toString();
 				UsersWrapper wListUser = usersRepository.get(username);
 				for (User i : wListUser.getUser())
 					if (i.getEmail().equalsIgnoreCase(username) || i.getUsername().equalsIgnoreCase(username))
@@ -54,7 +55,14 @@ public class Login {
 							String token = username + ":" + password;
 							String encodedUserPassword = new String(Base64.getEncoder().encode(token.getBytes()));
 							String authorization = AUTHENTICATION_SCHEME.concat(" ").concat(encodedUserPassword);
-							result = Response.ok(authorization).build();
+							JSONObject json = new JSONObject();
+							json.put("token", authorization);
+							json.put("id", i.getId());
+							json.put("name", i.getName());
+							json.put("surname", i.getSurname());
+							json.put("sex", i.getSex());
+							json.put("username", i.getUsername());
+							result = Response.ok(json.toJSONString()).build();
 						} else
 							result = Response.status(401).build();
 

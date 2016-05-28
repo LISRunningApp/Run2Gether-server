@@ -41,11 +41,16 @@ public class UsersRepository {
 	}
 
 	@Transactional
-	public UsersWrapper get(String idUser) {
+	public UsersWrapper get(String idUser) throws NullPointerException {
 		JPQLQuery<User> query = new JPAQuery<>(em);
 		QUser qu = QUser.user;
-		BooleanExpression wh = QUser.user.email.eq(idUser).or(QUser.user.username.eq(idUser));
-		UsersWrapper usersWrapper = new UsersWrapper(query.from(qu).where(wh).fetch());
+		UsersWrapper usersWrapper = null;
+		try {
+			BooleanExpression wh = QUser.user.email.eq(idUser).or(QUser.user.username.eq(idUser));
+			usersWrapper = new UsersWrapper(query.from(qu).where(wh).fetch());
+		} catch (NullPointerException e) {
+			throw new NullPointerException("User no Found");
+		}
 		return usersWrapper;
 	}
 
