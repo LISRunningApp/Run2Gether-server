@@ -77,7 +77,8 @@ public class CheckpointService {
 		JSONObject json = new JSONObject();
 		json.put("delante", upCheckpoint);
 		json.put("detras", downCheckpoint);
-		Response result = Response.ok(json.toJSONString()).build();
+		// agregar esto si da error .toJSONString()
+		Response result = Response.ok(json).build();
 
 		return result;
 	}

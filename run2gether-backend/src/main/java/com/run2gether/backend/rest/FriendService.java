@@ -1,5 +1,7 @@
 package com.run2gether.backend.rest;
 
+import java.util.ArrayList;
+
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -19,6 +21,8 @@ import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.Activity;
 import com.run2gether.backend.model.Friend;
 import com.run2gether.backend.model.User;
+import com.run2gether.backend.model.UserRequest;
+import com.run2gether.backend.model.wrappers.FriendWrapper;
 
 @Path("/friend")
 @Component
@@ -40,7 +44,27 @@ public class FriendService {
 		return null;
 	}
 
-	// @RolesAllowed("USER")
+	@RolesAllowed("USER")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{username}")
+	public Response getActivity(@PathParam("username") String username) {
+		Response result = Response.status(400).build();
+		try {
+			User user = userstRepository.get(username).getUser().get(0);
+			FriendWrapper listfriend = friendRepository.get(user);
+			ArrayList<UserRequest> friendUser = new ArrayList<UserRequest>();
+			for (Friend friend : listfriend.getFriend())
+				friendUser.add(new UserRequest(
+						userstRepository.get(friend.getUserByIdFriend().getUsername()).getUser().get(0)));
+			result = Response.ok(friendUser).build();
+		} catch (Exception e) {
+			result = Response.status(404).build();
+		}
+		return result;
+	}
+
+	@RolesAllowed("USER")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{newfriend}")
@@ -54,13 +78,15 @@ public class FriendService {
 			newFriend.setStatus("pending");
 			friendRepository.post(newFriend, user, friend);
 			result = Response.ok().build();
+
 		} catch (Exception e) {
 			result = Response.status(404).build();
 		}
+
 		return result;
 	}
 
-	// @RolesAllowed("USER")
+	@RolesAllowed("USER")
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{newfriend}")

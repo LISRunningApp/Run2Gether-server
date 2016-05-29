@@ -8,9 +8,14 @@ import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.run2gether.backend.model.Friend;
 import com.run2gether.backend.model.FriendId;
+import com.run2gether.backend.model.QFriend;
 import com.run2gether.backend.model.User;
+import com.run2gether.backend.model.wrappers.FriendWrapper;
 
 @Repository
 public class FriendRepository {
@@ -25,8 +30,24 @@ public class FriendRepository {
 		newFriend.setDateModified(new LocalDateTime().toDate());
 		newFriend.setUserByIdUser(user);
 		newFriend.setUserByIdFriend(friend);
+		newFriend.setId(new FriendId(user.getId(), friend.getId()));
 		em.persist(newFriend);
 		em.flush();
+	}
+
+	@Transactional
+	public FriendWrapper get(User user) {
+		JPQLQuery<Friend> query = new JPAQuery<>(em);
+		QFriend qf = QFriend.friend;
+		FriendWrapper friendWrapper = null;
+		try {
+			BooleanExpression wh = QFriend.friend.userByIdUser.eq(user);
+			friendWrapper = new FriendWrapper(query.from(qf).where(wh).fetch());
+		} catch (NullPointerException e) {
+			throw new NullPointerException("User no Found");
+		}
+		return friendWrapper;
+
 	}
 
 	@Transactional
