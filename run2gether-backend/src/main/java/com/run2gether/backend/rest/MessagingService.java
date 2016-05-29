@@ -1,6 +1,5 @@
 package com.run2gether.backend.rest;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.StringTokenizer;
 
@@ -119,8 +118,6 @@ public class MessagingService {
 			log.error("Unrecognized server OS type");
 			throw new WebApplicationException("Unrecognized server OS");
 		}
-
-		final File asset = new File(stream_path + audioName + ".mp3");
 
 		Response res = messagingController.streamAudio(stream_path + audioName, range);
 

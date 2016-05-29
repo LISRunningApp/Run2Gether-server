@@ -1,0 +1,230 @@
+#%RAML 0.8
+title: API
+version: v1
+baseUri: http://example.com/api
+protocols: [ HTTP ]
+/achievement: 
+  post: 
+    body: 
+      application/json: 
+    responses: 
+      200: 
+  /{username}/{date}: 
+    get: 
+      responses: 
+        200: 
+          body: 
+            application/json: 
+/activities/{username}: 
+  post: 
+    body: 
+      application/json: 
+    responses: 
+      200: 
+  /{activity}: 
+    uriParameters: 
+      activity: 
+        type: integer
+    put: 
+      body: 
+        application/json: 
+      responses: 
+        200: 
+  /{date}: 
+    get: 
+      responses: 
+        200: 
+          body: 
+            application/json: 
+/checkpoint: 
+  description: ""
+  /{grupactivityid}/{username}/{meters}: 
+    uriParameters: 
+      grupactivityid: 
+        type: integer
+      meters: 
+        type: integer
+    get: 
+      responses: 
+        200: 
+          body: 
+            application/json: 
+  /{username}: 
+    description: ""
+    /{activity}: 
+      uriParameters: 
+        activity: 
+          type: integer
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+    /{date}: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+/friend/{username}: 
+  get: 
+    responses: 
+      200: 
+        body: 
+          application/json: 
+  /{date}: 
+    get: 
+      responses: 
+        200: 
+          body: 
+            application/json: 
+  /{newfriend}: 
+    post: 
+      body: 
+        application/json: 
+      responses: 
+        200: 
+    put: 
+      body: 
+        application/json: 
+      responses: 
+        200: 
+/groupactivity: 
+  description: ""
+  /{idgroupactivity}: 
+    uriParameters: 
+      idgroupactivity: 
+        type: integer
+    put: 
+      body: 
+        application/json: 
+      responses: 
+        200: 
+  /{username}: 
+    post: 
+      body: 
+        application/json: 
+      responses: 
+        200: 
+    /{date}: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+/login: 
+  post: 
+    body: 
+      application/json: 
+    responses: 
+      200: 
+        body: 
+          text/plain: 
+  /facebook: 
+    post: 
+      body: 
+        application/json: 
+      responses: 
+        200: 
+          body: 
+            text/plain: 
+/messaging: 
+  description: ""
+  /channel/{channel}: 
+    uriParameters: 
+      channel: 
+        type: integer
+        required: true
+    get: 
+      responses: 
+        200: 
+          body: 
+            application/json: 
+  /register/channel/{groupActivityId}: 
+    uriParameters: 
+      groupActivityId: 
+        type: integer
+        required: true
+    post: 
+      headers: 
+        gcm-token: 
+        Authorization: 
+      responses: 
+        200: 
+          body: 
+            text/plain: 
+  /send/{channel}: 
+    uriParameters: 
+      channel: 
+        type: integer
+        required: true
+    post: 
+      headers: 
+        Authorization: 
+      body: 
+        multipart/form-data: 
+      responses: 
+        200: 
+  /stream/{audio_file}: 
+    get: 
+      headers: 
+        Range: 
+      responses: 
+        200: 
+          body: 
+            text/plain: 
+  /upload: 
+    post: 
+      body: 
+        multipart/form-data: 
+      responses: 
+        200: 
+/register: 
+  post: 
+    responses: 
+      200: 
+/registerusergroupactivity: 
+  description: ""
+  /{username}: 
+    description: ""
+    /{date}: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /{grupactivity}: 
+      uriParameters: 
+        grupactivity: 
+          type: integer
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+/userachievement/{username}/{idachievement}: 
+  uriParameters: 
+    idachievement: 
+      type: integer
+  post: 
+    body: 
+      application/json: 
+    responses: 
+      200: 
+/users: 
+  post: 
+    body: 
+      application/json: 
+    responses: 
+      200: 
+  get: 
+    responses: 
+      200: 
+        body: 
+          application/json: 
+  /{username}: 
+    put: 
+      body: 
+        application/json: 
+      responses: 
+        200: 
