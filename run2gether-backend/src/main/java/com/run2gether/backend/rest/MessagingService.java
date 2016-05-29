@@ -1,11 +1,7 @@
 package com.run2gether.backend.rest;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.WritableByteChannel;
 import java.util.StringTokenizer;
 
 import javax.annotation.security.RolesAllowed;
@@ -17,10 +13,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
 
 import org.apache.log4j.Logger;
 import org.glassfish.jersey.internal.util.Base64;
@@ -128,13 +122,8 @@ public class MessagingService {
 
 		final File asset = new File(stream_path + audioName + ".mp3");
 
-		StreamingOutput streamer = output -> {
-			try (FileChannel inputChannel = new FileInputStream(asset).getChannel();
-					WritableByteChannel outputChannel = Channels.newChannel(output);) {
-				inputChannel.transferTo(0, inputChannel.size(), outputChannel);
-			}
-		};
+		Response res = messagingController.streamAudio(stream_path + audioName, range);
 
-		return Response.ok(streamer).header(HttpHeaders.CONTENT_LENGTH, asset.length()).build();
+		return res;
 	}
 }

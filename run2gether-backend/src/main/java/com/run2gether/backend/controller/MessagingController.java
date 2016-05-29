@@ -1,19 +1,28 @@
 package com.run2gether.backend.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
 import org.apache.log4j.Logger;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -26,6 +35,7 @@ import com.google.android.gcm.server.Sender;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.User;
 import com.run2gether.backend.pojo.GcmMulticastChannel;
+import com.run2gether.backend.pojo.MediaStreamer;
 
 @Controller
 public class MessagingController {
@@ -149,4 +159,48 @@ public class MessagingController {
 		return channelController.getMulticastChannel(channelId).getTokenMap();
 	}
 
+	public Response streamAudio(String audio, String range) {
+		final int chunk_size = 1024 * 1024;
+		final File asset = new File(audio + ".mp3");
+
+		if (range == null) {
+			StreamingOutput streamer = output -> {
+				try (FileChannel inputChannel = new FileInputStream(asset).getChannel();
+						WritableByteChannel outputChannel = Channels.newChannel(output);) {
+					inputChannel.transferTo(0, inputChannel.size(), outputChannel);
+				}
+			};
+			return Response.ok(streamer).status(200).header(HttpHeaders.CONTENT_LENGTH, asset.length()).build();
+		}
+
+		String[] ranges = range.split("=")[1].split("-");
+		final int from = Integer.parseInt(ranges[0]);
+		/**
+		 * Chunk media if the range upper bound is unspecified. Chrome sends
+		 * "bytes=0-"
+		 */
+		int to = chunk_size + from;
+		if (to >= asset.length())
+			to = (int) (asset.length() - 1);
+		if (ranges.length == 2)
+			to = Integer.parseInt(ranges[1]);
+
+		final String responseRange = String.format("bytes %d-%d/%d", from, to, asset.length());
+		RandomAccessFile raf;
+		try {
+			raf = new RandomAccessFile(asset, "r");
+			raf.seek(from);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
+
+		final int len = to - from + 1;
+		final MediaStreamer streamer = new MediaStreamer(len, raf);
+		Response.ResponseBuilder res = Response.ok(streamer).status(206).header("Accept-Ranges", "bytes")
+				.header("Content-Range", responseRange).header(HttpHeaders.CONTENT_LENGTH, streamer.getLenth())
+				.header(HttpHeaders.LAST_MODIFIED, new Date(asset.lastModified()));
+
+		return res.build();
+	}
 }
