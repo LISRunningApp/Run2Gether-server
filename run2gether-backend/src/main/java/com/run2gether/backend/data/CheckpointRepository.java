@@ -43,6 +43,7 @@ public class CheckpointRepository {
 	public void post(Checkpoint newCheckpoint, Activity activity) {
 		newCheckpoint.setDateModified(new LocalDateTime().toDate());
 		newCheckpoint.setActivity(activity);
+		newCheckpoint.getId().setIdActivity(activity.getId());
 		em.persist(newCheckpoint);
 		em.flush();
 	}

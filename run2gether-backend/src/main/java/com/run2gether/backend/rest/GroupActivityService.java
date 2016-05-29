@@ -3,6 +3,7 @@ package com.run2gether.backend.rest;
 import java.text.SimpleDateFormat;
 
 import javax.annotation.security.RolesAllowed;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -88,6 +89,20 @@ public class GroupActivityService {
 		Integer idGroupActivity = groupActivityRepository.post(newGroupActivity,
 				usersRepository.get(username).getUser().get(0));
 		return Response.ok(idGroupActivity).build();
+	}
+
+	// @RolesAllowed("USER")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("full/{username}")
+	public Response addNewGroupActivityFull(@PathParam("username") String username, JsonObject activity) {
+		Response result = Response.status(400).build();
+		GroupActivityController activityController = new GroupActivityController();
+		if (activityController.creationGrouActivityAndActivity(username, activity))
+			result = Response.ok().build();
+		else
+			result = Response.status(404).build();
+		return result;
 	}
 
 	// @RolesAllowed("USER")
