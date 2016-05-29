@@ -38,6 +38,22 @@ public class ActivitiesService {
 	@RolesAllowed("USER")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{username}")
+	public Response get(@PathParam("username") String username) {
+		Response result = Response.status(400).build();
+		try {
+			User user = usersRepository.get(username).getUser().get(0);
+			result = Response.ok(activityRepository.get(user)).build();
+		} catch (Exception e) {
+			result = Response.status(404).entity(e.getMessage()).build();
+		}
+
+		return result;
+	}
+
+	@RolesAllowed("ADMIN")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{date}")
 	public Response getForDate(@PathParam("username") String username, @PathParam("date") String date) {
 		ActivitiesWrapper result;

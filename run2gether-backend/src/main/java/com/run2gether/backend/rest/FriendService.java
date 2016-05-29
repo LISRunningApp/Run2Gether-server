@@ -33,7 +33,7 @@ public class FriendService {
 	@Autowired
 	private UsersRepository userstRepository;
 
-	@RolesAllowed("USER")
+	@RolesAllowed("ADMIN")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{date}")

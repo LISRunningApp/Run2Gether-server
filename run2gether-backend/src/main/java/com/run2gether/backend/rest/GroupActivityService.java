@@ -1,5 +1,8 @@
 package com.run2gether.backend.rest;
 
+import java.text.SimpleDateFormat;
+
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,6 +20,7 @@ import com.run2gether.backend.controller.GroupActivityController;
 import com.run2gether.backend.data.ActivityRepository;
 import com.run2gether.backend.data.GroupActivityRepository;
 import com.run2gether.backend.data.UsersRepository;
+import com.run2gether.backend.model.Activity;
 import com.run2gether.backend.model.Groupactivity;
 import com.run2gether.backend.model.User;
 import com.run2gether.backend.model.wrappers.ActivitiesWrapper;
@@ -44,28 +48,37 @@ public class GroupActivityService {
 			User user = usersRepository.get(username).getUser().get(0);
 			ActivitiesWrapper listActivity = activityRepository.get(user);
 			GroupActivityController tools = new GroupActivityController();
-			return Response.ok(tools.NumeroGroupActivity(listActivity)).build();
+			Response.ok(tools.numeroGroupActivity(listActivity)).build();
 		} catch (Exception e) {
 			result = Response.status(404).build();
 		}
 		return result;
 	}
 
-	/*
-	 * @RolesAllowed("USER")
-	 *
-	 * @GET
-	 *
-	 * @Produces(MediaType.APPLICATION_JSON)
-	 *
-	 * @Path("/{username}/{date}") public Activity
-	 * getGrupActivity(@PathParam("username") String
-	 * username, @PathParam("date") String date) { // SimpleDateFormat formatter
-	 * = new SimpleDateFormat("dd-MMM-yyyy"); // Date dateQuerry =
-	 * formatter.parse(date);
-	 *
-	 * return null; }
-	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{username}")
+	public Response get(@PathParam("username") String username) {
+		Response result = Response.status(400).build();
+		try {
+			User user = usersRepository.get(username).getUser().get(0);
+			result = Response.ok(groupActivityRepository.getAdmin(user)).build();
+		} catch (Exception e) {
+			result = Response.status(404).build();
+		}
+		return result;
+	}
+
+	@RolesAllowed("ADMIN")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{username}/{date}")
+	public Activity getGrupActivity(@PathParam("username") String username, @PathParam("date") String date) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+		// Date dateQuerry = formatter.parse(date);
+
+		return null;
+	}
 
 	// @RolesAllowed("USER")
 	@POST
