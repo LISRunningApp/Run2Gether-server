@@ -24,7 +24,7 @@ public class AchievementService {
 	@Autowired
 	private AchievementRepository achievementRepository;
 
-	@RolesAllowed("USER")
+	@RolesAllowed("ADMIN")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{date}")

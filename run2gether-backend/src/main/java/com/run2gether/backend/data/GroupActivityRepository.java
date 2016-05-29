@@ -44,6 +44,16 @@ public class GroupActivityRepository {
 	}
 
 	@Transactional
+	public GroupActivityWrapper getAdmin(User user) {
+		JPQLQuery<Groupactivity> query = new JPAQuery<>(em);
+		QGroupactivity qga = QGroupactivity.groupactivity;
+		BooleanExpression wh = QGroupactivity.groupactivity.user.eq(user);
+		GroupActivityWrapper grupActivityWrapper = new GroupActivityWrapper(query.from(qga).where(wh).fetch());
+		return grupActivityWrapper;
+
+	}
+
+	@Transactional
 	public void put(Groupactivity groupActivity) {
 		groupActivity.setDateModified(new LocalDateTime().toDate());
 		em.merge(groupActivity);

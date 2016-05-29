@@ -78,4 +78,13 @@ public class ActivityRepository {
 		em.merge(activity);
 		em.flush();
 	}
+
+	@Transactional
+	public ActivitiesWrapper get(User user) {
+		JPQLQuery<Activity> query = new JPAQuery<>(em);
+		QActivity qa = QActivity.activity;
+		BooleanExpression wh = QActivity.activity.user.eq(user);
+		ActivitiesWrapper activityWrapper = new ActivitiesWrapper(query.from(qa).where(wh).fetch());
+		return activityWrapper;
+	}
 }

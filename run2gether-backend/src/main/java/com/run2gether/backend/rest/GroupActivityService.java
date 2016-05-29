@@ -1,5 +1,7 @@
 package com.run2gether.backend.rest;
 
+import java.text.SimpleDateFormat;
+
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -14,10 +16,14 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.run2gether.backend.controller.GroupActivityController;
+import com.run2gether.backend.data.ActivityRepository;
 import com.run2gether.backend.data.GroupActivityRepository;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.Activity;
 import com.run2gether.backend.model.Groupactivity;
+import com.run2gether.backend.model.User;
+import com.run2gether.backend.model.wrappers.ActivitiesWrapper;
 
 @Path("/groupactivity")
 @Component
@@ -29,12 +35,46 @@ public class GroupActivityService {
 	@Autowired
 	private UsersRepository usersRepository;
 
-	@RolesAllowed("USER")
+	@Autowired
+	private ActivityRepository activityRepository;
+
+	// @RolesAllowed("USER")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/size/{username}")
+	public Response sizeGrupActivity(@PathParam("username") String username) {
+		Response result = Response.status(400).build();
+		try {
+			User user = usersRepository.get(username).getUser().get(0);
+			ActivitiesWrapper listActivity = activityRepository.get(user);
+			GroupActivityController tools = new GroupActivityController();
+			Response.ok(tools.numeroGroupActivity(listActivity)).build();
+		} catch (Exception e) {
+			result = Response.status(404).build();
+		}
+		return result;
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{username}")
+	public Response get(@PathParam("username") String username) {
+		Response result = Response.status(400).build();
+		try {
+			User user = usersRepository.get(username).getUser().get(0);
+			result = Response.ok(groupActivityRepository.getAdmin(user)).build();
+		} catch (Exception e) {
+			result = Response.status(404).build();
+		}
+		return result;
+	}
+
+	@RolesAllowed("ADMIN")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{date}")
-	public Activity getActivity(@PathParam("username") String username, @PathParam("date") String date) {
-		// SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+	public Activity getGrupActivity(@PathParam("username") String username, @PathParam("date") String date) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 		// Date dateQuerry = formatter.parse(date);
 
 		return null;
