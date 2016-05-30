@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.run2gether.backend.controller.UsersController;
 import com.run2gether.backend.data.UsersRepository;
 import com.run2gether.backend.model.User;
 
@@ -27,6 +28,8 @@ public class UsersService {
 
 	@Autowired
 	private UsersRepository usersRepository;
+	@Autowired
+	private UsersController usersController;
 
 	// @RolesAllowed("USER")
 	@GET
@@ -63,7 +66,7 @@ public class UsersService {
 	@DELETE
 	@Path("/{username}")
 	public Response deleteUser(@PathParam(value = "username") String username) {
-
+		usersController.deleteUser(username);
 		return Response.ok().build();
 	}
 
