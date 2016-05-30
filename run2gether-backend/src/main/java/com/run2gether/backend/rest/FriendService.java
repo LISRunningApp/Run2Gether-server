@@ -64,7 +64,7 @@ public class FriendService {
 		return result;
 	}
 
-	@RolesAllowed("USER")
+	// @RolesAllowed("USER")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{username}/{newfriend}")

@@ -49,7 +49,7 @@ public class UsersRepository {
 			BooleanExpression wh = QUser.user.email.eq(idUser).or(QUser.user.username.eq(idUser));
 			usersWrapper = new UsersWrapper(query.from(qu).where(wh).fetch());
 		} catch (NullPointerException e) {
-			throw new NullPointerException("User no Found");
+			throw new NullPointerException("User not Found");
 		}
 		return usersWrapper;
 	}
@@ -57,9 +57,14 @@ public class UsersRepository {
 	@Transactional
 	public User getUserByUniquekey(String usernameormail) {
 		JPQLQuery<User> query = new JPAQuery<>(em);
+		User user = null;
 		QUser qu = QUser.user;
-		BooleanExpression wh = QUser.user.email.eq(usernameormail).or(QUser.user.username.eq(usernameormail));
-		User user = query.from(qu).where(wh).fetch().get(0);
+		try {
+			BooleanExpression wh = QUser.user.email.eq(usernameormail).or(QUser.user.username.eq(usernameormail));
+			user = query.from(qu).where(wh).fetch().get(0);
+		} catch (NullPointerException e) {
+			throw new NullPointerException("User not found");
+		}
 		return user;
 	}
 
@@ -67,6 +72,12 @@ public class UsersRepository {
 	public void put(User user) {
 		user.setDateModified(new LocalDateTime().toDate());
 		em.merge(user);
+		em.flush();
+	}
+
+	@Transactional
+	public void delete(User user) {
+		em.remove(user);
 		em.flush();
 	}
 }

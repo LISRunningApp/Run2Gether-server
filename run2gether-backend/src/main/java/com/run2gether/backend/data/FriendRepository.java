@@ -44,7 +44,7 @@ public class FriendRepository {
 			BooleanExpression wh = QFriend.friend.userByIdUser.eq(user);
 			friendWrapper = new FriendWrapper(query.from(qf).where(wh).fetch());
 		} catch (NullPointerException e) {
-			throw new NullPointerException("User no Found");
+			throw new NullPointerException("User not Found");
 		}
 		return friendWrapper;
 

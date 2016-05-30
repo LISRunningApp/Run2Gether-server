@@ -2,6 +2,7 @@ package com.run2gether.backend.rest;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -57,6 +58,13 @@ public class UsersService {
 			result = Response.status(404).build();
 		}
 		return result;
+	}
+
+	@DELETE
+	@Path("/{username}")
+	public Response deleteUser(@PathParam(value = "username") String username) {
+
+		return Response.ok().build();
 	}
 
 }
