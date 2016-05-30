@@ -38,7 +38,7 @@ public class GroupActivityController {
 
 	public Boolean creationGrouActivityAndActivity(String userName, JsonObject json) {
 		Boolean result = false;
-		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
 		User user = userRepository.getUserByUniquekey(userName);
 		Groupactivity gactivity = new Groupactivity();
 		gactivity.setUser(userRepository.getUserByUniquekey(userName));
