@@ -1,23 +1,30 @@
 package com.run2gether.backend.pojo;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 public class GcmMulticastChannel {
 
-	private Map<Integer, String> tokenMap;
+	private BiMap<Integer, String> tokenMap;
 
 	public GcmMulticastChannel() {
-		tokenMap = new HashMap<>();
+		tokenMap = HashBiMap.create();
 	}
 
 	public GcmMulticastChannel(int userId, String token) {
-		tokenMap = new HashMap<>();
+		tokenMap = HashBiMap.create();
 		tokenMap.put(userId, token);
 	}
 
 	public GcmMulticastChannel put(int user, String token) {
-		tokenMap.put(user, token);
+		if (tokenMap.containsValue(token)) {
+			int lastuser = tokenMap.inverse().get(token);
+			tokenMap.remove(lastuser);
+			tokenMap.put(user, token);
+		} else
+			tokenMap.put(user, token);
 		return this;
 	}
 
@@ -35,14 +42,6 @@ public class GcmMulticastChannel {
 	 */
 	public Map<Integer, String> getTokenMap() {
 		return tokenMap;
-	}
-
-	/**
-	 * @param tokenMap
-	 *            the tokenMap to set
-	 */
-	public void setTokenMap(Map<Integer, String> tokenMap) {
-		this.tokenMap = tokenMap;
 	}
 
 }

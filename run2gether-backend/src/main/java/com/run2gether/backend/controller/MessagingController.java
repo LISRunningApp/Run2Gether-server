@@ -129,12 +129,12 @@ public class MessagingController {
 
 	public void registerUserToChannel(int channel, String username, String token) {
 		User user = usersRepository.getUserByUniquekey(username);
-		// GroupActivity activity
 		int userId;
 		if (user != null)
 			userId = user.getId();
 		else
 			throw new WebApplicationException("User not found");
+
 		channelController.registerUserToChannel(channel, userId, token);
 	}
 
