@@ -44,7 +44,7 @@ public class GroupActivityController {
 		gactivity.setUser(userRepository.getUserByUniquekey(userName));
 		gactivity.setResume(json.getString("descripcion"));
 		try {
-			gactivity.setStartDate(formato.parse(json.getString("fecha")));
+			gactivity.setStartDate(formato.parse(json.getString("fecha").replaceAll("\"", "")));
 			Activity newActivities;
 			Integer createGroupActivity = groupActivityRepository.post(gactivity, user);
 			for (String userList : json.getString("listaUsuarios").split("/")) {
