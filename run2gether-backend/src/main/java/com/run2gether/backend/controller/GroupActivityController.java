@@ -53,6 +53,10 @@ public class GroupActivityController {
 				newActivities.setIdGroupactivities(createGroupActivity);
 				activityRepository.post(newActivities, userRepository.getUserByUniquekey(userList));
 			}
+			newActivities = new Activity();
+			newActivities.setIdGroupactivities(createGroupActivity);
+			activityRepository.post(newActivities, user);
+
 			result = true;
 		} catch (ParseException e) {
 			result = false;
