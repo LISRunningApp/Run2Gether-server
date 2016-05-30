@@ -97,8 +97,9 @@ public class GroupActivityService {
 	@Path("/full/{username}")
 	public Response addNewGroupActivityFull(@PathParam("username") String username, JsonObject activity) {
 		Response result = Response.status(400).build();
-		if (groupactivityController.creationGrouActivityAndActivity(username, activity))
-			result = Response.ok().build();
+		Integer id = groupactivityController.creationGrouActivityAndActivity(username, activity);
+		if (id != null)
+			result = Response.ok(id.toString()).build();
 		else
 			result = Response.status(404).build();
 		return result;

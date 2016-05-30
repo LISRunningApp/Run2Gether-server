@@ -25,7 +25,7 @@ public class GroupActivityRepository {
 	final Logger log = Logger.getLogger(GroupActivityRepository.class);
 
 	@Transactional
-	public Integer post(Groupactivity newGroupActivitiy, User user) {
+	public int post(Groupactivity newGroupActivitiy, User user) {
 		newGroupActivitiy.setDateModified(new LocalDateTime().toDate());
 		newGroupActivitiy.setUser(user);
 		em.persist(newGroupActivitiy);

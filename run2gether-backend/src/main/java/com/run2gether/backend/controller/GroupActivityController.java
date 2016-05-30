@@ -36,8 +36,9 @@ public class GroupActivityController {
 		return value;
 	}
 
-	public Boolean creationGrouActivityAndActivity(String userName, JsonObject json) {
+	public Integer creationGrouActivityAndActivity(String userName, JsonObject json) {
 		Boolean result = false;
+		Integer createGroupActivity = null;
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
 		User user = userRepository.getUserByUniquekey(userName);
 		Groupactivity gactivity = new Groupactivity();
@@ -46,7 +47,7 @@ public class GroupActivityController {
 		try {
 			gactivity.setStartDate(formato.parse(json.getString("fecha").replaceAll("\"", "")));
 			Activity newActivities;
-			Integer createGroupActivity = groupActivityRepository.post(gactivity, user);
+			createGroupActivity = groupActivityRepository.post(gactivity, user);
 			for (String userList : json.getString("listaUsuarios").split("/")) {
 				newActivities = new Activity();
 				newActivities.setIdGroupactivities(createGroupActivity);
@@ -57,7 +58,7 @@ public class GroupActivityController {
 			result = false;
 		}
 
-		return result;
+		return createGroupActivity;
 	}
 
 }
