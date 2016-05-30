@@ -31,11 +31,11 @@ import com.run2gether.backend.model.wrappers.ActivitiesWrapper;
 public class GroupActivityService {
 
 	@Autowired
+	private GroupActivityController groupactivityController;
+	@Autowired
 	private GroupActivityRepository groupActivityRepository;
-
 	@Autowired
 	private UsersRepository usersRepository;
-
 	@Autowired
 	private ActivityRepository activityRepository;
 
@@ -97,8 +97,7 @@ public class GroupActivityService {
 	@Path("full/{username}")
 	public Response addNewGroupActivityFull(@PathParam("username") String username, JsonObject activity) {
 		Response result = Response.status(400).build();
-		GroupActivityController activityController = new GroupActivityController();
-		if (activityController.creationGrouActivityAndActivity(username, activity))
+		if (groupactivityController.creationGrouActivityAndActivity(username, activity))
 			result = Response.ok().build();
 		else
 			result = Response.status(404).build();

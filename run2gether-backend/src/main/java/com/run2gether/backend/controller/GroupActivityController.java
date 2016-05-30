@@ -7,7 +7,6 @@ import javax.json.JsonObject;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import com.run2gether.backend.data.ActivityRepository;
@@ -19,7 +18,6 @@ import com.run2gether.backend.model.User;
 import com.run2gether.backend.model.wrappers.ActivitiesWrapper;
 
 @Controller
-@Component
 public class GroupActivityController {
 	private Logger log = Logger.getLogger(GroupActivityController.class);
 
