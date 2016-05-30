@@ -40,7 +40,6 @@ public class GroupActivityRepository {
 		BooleanExpression wh = QGroupactivity.groupactivity.id.eq(groupActivity);
 		GroupActivityWrapper grupActivityWrapper = new GroupActivityWrapper(query.from(qga).where(wh).fetch());
 		return grupActivityWrapper;
-
 	}
 
 	@Transactional
