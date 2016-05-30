@@ -94,7 +94,7 @@ public class GroupActivityService {
 	// @RolesAllowed("USER")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("full/{username}")
+	@Path("/full/{username}")
 	public Response addNewGroupActivityFull(@PathParam("username") String username, JsonObject activity) {
 		Response result = Response.status(400).build();
 		if (groupactivityController.creationGrouActivityAndActivity(username, activity))
