@@ -48,7 +48,7 @@ public class CheckpointRepository {
 		em.flush();
 	}
 
-	public CheckpointWrapper getCheckpointsForIDActivity(Integer idactivity) {
+	public CheckpointWrapper getCheckpointsForIDActivity(int idactivity) {
 		try {
 
 			JPQLQuery<Checkpoint> query = new JPAQuery<>(em);

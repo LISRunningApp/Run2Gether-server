@@ -19,7 +19,7 @@ public class CheckpointController {
 	 * @return
 	 * @throws Exception
 	 */
-	public CheckpointWrapper getcheckpointsForActivity(Integer idactivity) throws Exception {
+	public CheckpointWrapper getcheckpointsForActivity(int idactivity) throws Exception {
 		return checkpointRepository.getCheckpointsForIDActivity(idactivity);
 
 	}

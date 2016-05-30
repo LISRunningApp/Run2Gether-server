@@ -46,16 +46,19 @@ public class UsersTest extends JerseyTest {
 								.add("age", 22).add("size", 1342).add("weight", 324.f).add("sex", "m").build())
 				.build();
 		Entity<JsonObject> userentity = Entity.entity(user, MediaType.APPLICATION_JSON_TYPE);
-		System.out.println(user.toString());
-		System.out.println(userentity.toString());
 		Response res = target("users").request().header("Authorization", "Basic ZjNycmk4ODptaWF1")
 				.header("Content-Type", "application/json").accept(MediaType.APPLICATION_JSON).post(userentity);
-		System.out.println(res.toString());
+		// assert res.getStatusInfo() == Response.Status.OK;
 	}
 
 	@Test
 	public void getAllUsers() {
 		JsonObject res = target("users").request().get(JsonObject.class);
-		System.out.println(res.toString());
+	}
+
+	@Test
+	public void deleteUser() {
+		Response res = target("users/manueh").request().delete();
+		// assert res.getStatusInfo() == Response.Status.OK;
 	}
 }
