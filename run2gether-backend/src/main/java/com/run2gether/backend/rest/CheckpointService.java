@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.run2gether.backend.controller.CheckpointController;
 import com.run2gether.backend.data.ActivityRepository;
 import com.run2gether.backend.data.CheckpointRepository;
 import com.run2gether.backend.data.UsersRepository;
@@ -27,6 +28,8 @@ import com.run2gether.backend.model.wrappers.ActivitiesWrapper;
 @Component
 public class CheckpointService {
 
+	@Autowired
+	private CheckpointController checkpointController;
 	@Autowired
 	private CheckpointRepository checkpointRepository;
 	@Autowired
@@ -43,6 +46,20 @@ public class CheckpointService {
 		// Date dateQuerry = formatter.parse(date);
 
 		return null;
+	}
+
+	// @RolesAllowed("USER")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{activityid}")
+	public Response checkpointsForActivity(@PathParam("activityid") Integer activityid) {
+		Response result = Response.status(400).build();
+		try {
+			result = Response.ok(checkpointController.getcheckpointsForActivity(activityid)).build();
+		} catch (Exception e) {
+			result = Response.status(404).build();
+		}
+		return result;
 	}
 
 	// @RolesAllowed("USER")

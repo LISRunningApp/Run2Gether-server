@@ -24,7 +24,6 @@ public class UserAchievementService {
 	private AchievementRepository achievementRepository;
 	@Autowired
 	private UsersRepository usersRepository;
-
 	@Autowired
 	private UserAchievementRepository usersAchievementRepository;
 

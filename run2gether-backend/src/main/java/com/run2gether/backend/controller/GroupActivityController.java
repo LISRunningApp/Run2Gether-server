@@ -44,12 +44,15 @@ public class GroupActivityController {
 		gactivity.setUser(userRepository.getUserByUniquekey(userName));
 		gactivity.setResume(json.getString("descripcion"));
 		try {
-			gactivity.setDateModified(formato.parse(json.getString("fecha")));
-			Activity newActivities = new Activity();
-			newActivities.setIdGroupactivities(groupActivityRepository.post(gactivity, user));
-			for (String userList : json.getString("listaUsuarios").split("/"))
+			gactivity.setStartDate(formato.parse(json.getString("fecha")));
+			Activity newActivities;
+			Integer createGroupActivity = groupActivityRepository.post(gactivity, user);
+			for (String userList : json.getString("listaUsuarios").split("/")) {
+				newActivities = new Activity();
+				newActivities.setIdGroupactivities(createGroupActivity);
 				activityRepository.post(newActivities, userRepository.getUserByUniquekey(userList));
-
+			}
+			result = true;
 		} catch (ParseException e) {
 			result = false;
 		}

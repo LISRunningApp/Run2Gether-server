@@ -48,4 +48,19 @@ public class CheckpointRepository {
 		em.flush();
 	}
 
+	public CheckpointWrapper getCheckpointsForIDActivity(Integer idactivity) {
+		try {
+
+			JPQLQuery<Checkpoint> query = new JPAQuery<>(em);
+			QCheckpoint qc = QCheckpoint.checkpoint;
+			BooleanExpression wh = QCheckpoint.checkpoint.activity.id.eq(idactivity);
+			CheckpointWrapper checkpointWrapper = new CheckpointWrapper(query.from(qc).where(wh).fetch());
+			return checkpointWrapper;
+
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
+
 }
